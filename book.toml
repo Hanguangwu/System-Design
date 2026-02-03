@@ -1,7 +1,6 @@
 [book]
 authors = ["Hanguangwu"]
-language = "en"
-multilingual = false
+language = "zh-cn"
 src = "src"
 title = "Mdbook Template"
 [preprocessor.toc]
