@@ -2,7 +2,7 @@
 authors = ["Hanguangwu"]
 language = "zh-cn"
 src = "src"
-title = "Mdbook Template"
+title = "The Zen of Programming"
 [preprocessor.toc]
 command = "mdbook-toc"
 renderer = ["html"]
