@@ -1,0 +1,450 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>18-模板方法模式 - The Zen of Programming</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-4fa65084.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-df451732.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Zen of Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h2 id="什么是模板方法模式"><a class="header" href="#什么是模板方法模式">什么是模板方法模式？</a></h2>
+<p><strong>模板方法模式</strong>（Template Method Pattern）是一种行为型设计模式，它的核心思想是：<strong>在一个方法中定义好算法的整体流程结构，把一些具体的步骤延迟到子类中去实现</strong>。也就是说，父类负责规定流程框架，具体的细节由子类根据需要自己去填充。</p>
+<p>简单讲，就是我们在父类里搭好框架，规定好执行流程，哪些步骤必须有，哪些步骤需要变化，但是具体怎么做，由子类去填充细节。这样做有一个很重要的好处：能够复用通用流程的代码，又能灵活地定制细节。父类定义流程骨架，子类实现具体内容，两边互不干扰。</p>
+<p>鱼皮在写代码前都有泡茶或者泡咖啡的习惯，这两个其实流程都差不多：先烧水、再冲泡、然后倒进杯子，最后加点糖或者柠檬。烧水、倒水这些是固定套路，但“泡茶”还是“冲咖啡”，就要看具体饮品来决定了。换句话说，这个泡饮品的流程，其实就是父类写的“模板方法”，不同饮品自己来决定怎么实现具体步骤。</p>
+<h3 id=""><a class="header" href="#"><img src="./img/94.png" alt=""></a></h3>
+<h2 id="为什么要使用模板方法模式"><a class="header" href="#为什么要使用模板方法模式">为什么要使用模板方法模式？</a></h2>
+<p>在开发中，很多业务场景虽然看起来不同，但其实流程结构是类似的。如果我们在每个具体实现里都重复写相同的流程控制代码，不仅代码量大，而且维护困难。<br>使用模板方法模式以后，我们能把公共的流程逻辑抽取到父类里，保证结构统一，又能让不同子类根据实际情况去扩展自己的特殊步骤。<br>这样一来，代码复用率高了，扩展也变得更方便了。特别是在流程标准化又希望有一定灵活性的时候，模板方法模式可以说非常合适。</p>
+<p>为了让大家更好地感受到模板方法模式的作用，以订单处理流程为例，我们需要实现一个支持不同类型订单处理的系统。让我们来看看使用和不使用模板方法模式的区别：</p>
+<p><img src="./img/95.png" alt="">通过对比可以看出，不使用模板方法模式时，每个订单处理类都需要重复实现相同的流程步骤，导致代码重复，且难以维护。当需要修改公共流程时，需要修改所有相关的类，增加了出错的风险。</p>
+<p>而使用模板方法模式后，我们将公共的流程步骤定义在抽象类中，具体的实现细节由子类完成。这种设计使得代码结构更加清晰，减少了重复代码，提高了代码的可维护性。同时，模板方法模式也使得系统更容易扩展，添加新的订单类型只需要创建新的子类并实现特定的方法即可。</p>
+<h2 id="模板方法模式的应用场景"><a class="header" href="#模板方法模式的应用场景">模板方法模式的应用场景</a></h2>
+<p>举一些开发中典型的应用场景：</p>
+<ul>
+<li>爬虫系统中的通用抓取流程：在开发爬虫时，不同网站的页面结构不同，但抓取流程往往类似（如：建立连接 → 下载页面 → 解析内容 → 保存数据）。可以使用模板方法模式定义抽象的抓取流程，将每一步封装成钩子方法，让子类实现特定网站的解析逻辑。</li>
+<li>活动营销系统中的通用促销流程：在电商的促销活动中，执行流程类似（校验资格 → 计算优惠 → 发送通知），但每种活动的优惠逻辑不同。可以通过模板方法封装统一的执行框架，不同的促销活动继承实现自己的优惠计算方式。</li>
+<li>订单处理流程标准化：在大型电商或供应链系统中，不同类型订单（实物商品、虚拟商品、预售商品等）的处理流程高度相似（如校验 → 支付 → 发货 → 通知），但发货逻辑或通知方式有所差异。可用模板方法抽象出通用流程结构，允许各子类扩展具体细节逻辑。</li>
+</ul>
+<h2 id="模板方法模式的基本结构"><a class="header" href="#模板方法模式的基本结构">模板方法模式的基本结构</a></h2>
+<p>模板方法模式具有的角色和职责：</p>
+<p>1）抽象类（AbstractClass）：定义模板方法和基本流程骨架，声明一些抽象操作让子类实现。</p>
+<p>2）具体子类（ConcreteClass）：实现父类定义的抽象步骤，完成特定子类自己的逻辑。</p>
+<p>下面用一张类图帮大家更直观地理解模板方法模式的结构：</p>
+<p><img src="./img/96.png" alt=""></p>
+<h2 id="模板方法模式的实现"><a class="header" href="#模板方法模式的实现">模板方法模式的实现</a></h2>
+<p>下面就以 “订单处理流程” 为例，我们用模板方法模式实现一个简单的订单处理流程。</p>
+<p>1）定义抽象类：提供模板方法和公共流程</p>
+<pre><code class="language-java">abstract class OrderProcessTemplate {
+    // 模板方法，定义了订单处理的固定步骤
+    public final void processOrder() {
+        checkStock();
+        pay();
+        deliver();
+        notifyCustomer();
+    }
+
+    // 校验库存的步骤，所有订单都需要
+    protected void checkStock() {
+        System.out.println("检查库存");
+    }
+
+    // 支付步骤，交由具体子类实现
+    protected abstract void pay();
+
+    // 发货步骤，交由具体子类实现
+    protected abstract void deliver();
+
+    // 通知客户的步骤，所有订单都需要
+    protected void notifyCustomer() {
+        System.out.println("通知客户订单处理完成");
+    }
+}
+</code></pre>
+<p>在这段代码中，我们定义了一个 <code>OrderProcessTemplate</code> 类，其中的 <code>processOrder</code> 方法是模板方法，包含了订单处理的公共步骤。<code>checkStock</code> 和 <code>notifyCustomer</code> 是所有订单都必须进行的步骤，所以它们在父类中实现了。而 <code>pay</code> 和 <code>deliver</code> 这些具体的步骤则被声明为抽象方法，由具体的子类实现。</p>
+<p>2）实现具体子类：实现具体步骤</p>
+<pre><code class="language-java">class PhysicalProductOrder extends OrderProcessTemplate {
+    @Override
+    protected void pay() {
+        System.out.println("支付实物商品的订单");
+    }
+
+    @Override
+    protected void deliver() {
+        System.out.println("发货实物商品");
+    }
+}
+</code></pre>
+<p>具体子类 <code>PhysicalProductOrder</code> 实现了支付和发货的具体逻辑，对于实物商品的订单，支付方式和发货方式可能与虚拟商品不同。</p>
+<pre><code class="language-java">class VirtualProductOrder extends OrderProcessTemplate {
+    @Override
+    protected void pay() {
+        System.out.println("支付虚拟商品的订单");
+    }
+
+    @Override
+    protected void deliver() {
+        System.out.println("通过邮件发送虚拟商品");
+    }
+}
+</code></pre>
+<p><code>VirtualProductOrder</code> 继承了模板类，并实现了虚拟商品的支付和发货逻辑。对于虚拟商品，支付和发货的流程与实物商品不同。</p>
+<p>3）客户端调用示例</p>
+<pre><code class="language-java">public class Client {
+    public static void main(String[] args) {
+        System.out.println("处理实物商品订单：");
+        OrderProcessTemplate physicalOrder = new PhysicalProductOrder();
+        physicalOrder.processOrder(); // 调用模板方法
+
+        System.out.println("\n处理虚拟商品订单：");
+        OrderProcessTemplate virtualOrder = new VirtualProductOrder();
+        virtualOrder.processOrder(); // 调用模板方法
+    }
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code class="language-plain">处理实物商品订单：
+检查库存
+支付实物商品的订单
+发货实物商品
+通知客户订单处理完成
+
+处理虚拟商品订单：
+检查库存
+支付虚拟商品的订单
+通过邮件发送虚拟商品
+通知客户订单处理完成
+</code></pre>
+<p>在这个下单的例子中，使用模板方法模式可以帮助我们抽象出公共的处理流程（如检查库存和通知客户），并允许具体的子类去定制化支付和发货的实现细节。这样一来，系统能够处理不同类型的订单，但流程依然保持一致，同时又能根据具体的订单类型（如实物商品和虚拟商品）来定制具体步骤。</p>
+<h2 id="模板方法模式的优缺点"><a class="header" href="#模板方法模式的优缺点">模板方法模式的优缺点</a></h2>
+<h3 id="优点"><a class="header" href="#优点">优点</a></h3>
+<ul>
+<li><strong>代码复用性高</strong>：模板方法模式的最大优势就是能够在父类中提供一个统一的流程框架，子类只需要实现特定的步骤，避免了重复的代码，实现了高效的代码复用。</li>
+<li><strong>控制流程</strong>：父类定义了一个整体的算法流程，并且控制了步骤的执行顺序，确保了算法的一致性。子类只能修改某些特定步骤，保证了流程的稳定性。</li>
+<li><strong>提高扩展性</strong>：模板方法模式将通用的逻辑放在父类中，子类只需关心自己特有的部分。这样，新增子类时，基本不需要修改现有代码，扩展非常方便。</li>
+</ul>
+<h3 id="缺点"><a class="header" href="#缺点">缺点</a></h3>
+<ul>
+<li><strong>父类过于庞大</strong>：如果模板方法里有很多步骤，而每个步骤都涉及到大量的逻辑，父类可能会变得非常臃肿，难以维护。</li>
+<li><strong>不够灵活</strong>：模板方法模式限制了子类的行为，子类只能修改父类中的某些步骤，无法对整体流程进行更多的定制，这在某些情况下可能导致灵活性不足。</li>
+<li><strong>过多的继承关系</strong>：使用模板方法模式时，可能会引入过多的继承层次，增加了类之间的耦合性，不利于系统的可维护性。</li>
+</ul>
+<h2 id="扩展知识---源码分析"><a class="header" href="#扩展知识---源码分析">扩展知识 - 源码分析</a></h2>
+<h3 id="开源框架中的应用"><a class="header" href="#开源框架中的应用">开源框架中的应用</a></h3>
+<h4 id="1jdk"><a class="header" href="#1jdk">1、JDK</a></h4>
+<p>在 JDK 的集合框架里，其实模板方法模式的用法特别常见。我们可以看到 <code>AbstractList</code>、<code>AbstractSet</code>、<code>AbstractMap</code> 这些抽象类里，都提前定义好了集合的整体操作逻辑，而把具体行为留给子类去实现。我们拿 <code>AbstractList</code> 这个类来举个例子。</p>
+<p>比如 <code>addAll(Collection&lt;? extends E&gt; c)</code> 这个方法，它的整体流程是已经写死的：先做参数检查、然后遍历集合调用 <code>add()</code> 方法、再根据添加结果返回布尔值。但是这个 <code>add()</code> 方法本身是抽象的，交给子类来实现。</p>
+<pre><code class="language-java">public abstract class AbstractList&lt;E&gt; extends AbstractCollection&lt;E&gt; implements List&lt;E&gt; {
+
+    // 模板方法，添加所有元素
+    public boolean addAll(int index, Collection&lt;? extends E&gt; c) {
+        rangeCheckForAdd(index);
+        boolean modified = false;
+        for (E e : c) {
+            // 调用子类的 add 方法，模板方法的核心体现
+            add(index++, e);
+            modified = true;
+        }
+        return modified;
+    }
+
+    abstract E get(int index);
+
+    abstract E set(int index, E element);
+}
+</code></pre>
+<p>在这个过程中，<code>addAll()</code> 是一个<strong>模板方法</strong>，规定好了执行流程，而把核心操作 <code>add()</code> 抽象出来。这样不同的集合子类可以自定义 <code>add()</code> 的实现，但整个流程逻辑是不变的。</p>
+<p>我们可以通过类图来表示下结构：</p>
+<p><img src="./img/97.png" alt=""></p>
+<h4 id="2spring-框架"><a class="header" href="#2spring-框架">2、Spring 框架</a></h4>
+<p>在 Spring 中，<code>JdbcTemplate</code> 是一个非常典型的模板方法模式的应用。我们在平时写数据库代码的时候，只需要传入 SQL 和参数，甚至只实现一个回调接口，就能完成复杂的操作，比如查询、更新、事务控制等等。</p>
+<p>它的核心思路是：先定义好数据库操作的整体流程，包括：</p>
+<p>1）获取连接</p>
+<p>2）执行 SQL</p>
+<p>3）处理结果集</p>
+<p>4）关闭连接</p>
+<p>这里我们只关心传入SQL语句，以及怎么把查询结果的数据映射成对象，其他像连接的获取、语句的执行、结果的处理、资源的释放，全部由 <code>JdbcTemplate</code> 处理好。我们来看下源码：</p>
+<pre><code class="language-java">public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
+
+    public &lt;T&gt; T query(String sql, ResultSetExtractor&lt;T&gt; rse) throws DataAccessException {
+        // 省略其他代码...
+        return execute(new QueryStatementCallback(sql, rse));
+    }
+
+    private &lt;T&gt; T execute(StatementCallback&lt;T&gt; action, boolean closeResources) throws DataAccessException {
+        Assert.notNull(action, "Callback object must not be null");
+        // 从数据源中获取一个数据库连接
+        Connection con = DataSourceUtils.getConnection(obtainDataSource());
+        Statement stmt = null;
+        try {
+            // 创建一个 Statement 对象用于执行 SQL
+            stmt = con.createStatement();
+            // 应用配置，比如设置超时时间、fetch size 等
+            applyStatementSettings(stmt);
+            // 执行回调中的数据库逻辑，回调交给使用者处理
+            T result = action.doInStatement(stmt);
+            handleWarnings(stmt);
+            return result;
+        }
+        catch (SQLException ex) {
+            // 省略其他代码...
+        }
+        finally {
+            if (closeResources) {
+                JdbcUtils.closeStatement(stmt);
+                DataSourceUtils.releaseConnection(con, getDataSource());
+            }
+        }
+    }
+}
+</code></pre>
+<p>这个 <code>execute</code> 方法就像模板一样，定义了整体数据库访问的步骤，而具体逻辑由回调类 <code>QueryStatementCallback</code>去实现。</p>
+<h3 id="优势和作用"><a class="header" href="#优势和作用">优势和作用</a></h3>
+<p>通过上述的源码分析，我们可以再次总结下模板方法模式的作用。</p>
+<h4 id="1统一流程提升复用"><a class="header" href="#1统一流程提升复用">1、统一流程、提升复用</a></h4>
+<p>模板方法把一套通用流程写在父类里，只把个别步骤留给子类实现。比如 JDK 中的 <code>AbstractList</code>、<code>AbstractSet</code>、<code>AbstractMap</code>，都统一了集合的核心逻辑，具体添加、删除交由子类完成；Spring 的 <code>JdbcTemplate</code>也是，把连接、执行、关闭这些流程封装好了，我们只管写 SQL 和处理结果。</p>
+<h4 id="2提升扩展能力"><a class="header" href="#2提升扩展能力">2、提升扩展能力</a></h4>
+<p>如果我们想加点新逻辑，只需要继承父类或传入回调就行，不需要动原来的模板。像 <code>JdbcTemplate</code> 支持自定义 <code>RowMapper</code>，集合框架也允许我们扩展自定义的 List、Set，非常方便。</p>
+<h4 id="3减少出错概率"><a class="header" href="#3减少出错概率">3、减少出错概率</a></h4>
+<p>一些操作必须按照固定顺序执行，比如数据库的连接、释放。如果交给开发者手写，很容易出错。模板方法把这些顺序定死了，流程稳定、出错少。</p>
+<h4 id="4适合框架封装"><a class="header" href="#4适合框架封装">4、适合框架封装</a></h4>
+<p>框架里常有固定流程 + 可扩展的场景，模板方法很适合这种结构。Spring、Servlet、JDBC 里都大量用到了它。</p>
+<h2 id="相关项目"><a class="header" href="#相关项目">相关项目</a></h2>
+<h4 id="编程导航的智能云图库项目"><a class="header" href="#编程导航的智能云图库项目">编程导航的智能云图库项目</a></h4>
+<p>在 <a href="https://www.codefather.cn/course/1864210260732116994">编程导航的智能云图库项目</a> 的图片上传模块中，使用了模板方法模式。通用的上传流程（如校验、生成临时文件、上传到对象存储、解析图片信息、删除临时文件）被统一定义在抽象类 <code>PictureUploadTemplate</code> 中。对于“本地文件上传”和“URL 上传”这两种不同的场景，分别通过子类 <code>FilePictureUpload</code> 和 <code>UrlPictureUpload</code> 实现，在“校验图片”、“获取文件名”、“下载或处理文件”等与输入源相关的步骤中提供差异化逻辑，其余流程则复用模板父类的实现。</p>
+<p><img src="./img/98.png" alt=""></p>
+<h4 id="编程导航的代码生成器平台项目"><a class="header" href="#编程导航的代码生成器平台项目">编程导航的代码生成器平台项目</a></h4>
+<p>在 <a href="https://www.codefather.cn/course/1790980795074654209">编程导航的代码生成器平台项目</a> 的生成器模块中使用了模板方法模式。由于生成流程较多且逻辑复杂，将整体流程抽象成模板基类，统一定义执行步骤的标准流程。具体的生成环节（如生成 JAR 包、生成脚本等）由不同的子类实现，从而在不改动主流程结构的前提下，根据实际需求定制各步骤逻辑。例如，如果需要在生成 JAR 包的环节中增加输出信息，只需新增一个子类并重写对应方法即可，有助于提升代码的可维护性和扩展性。</p>
+<p><img src="./img/99.png" alt=""></p>
+<h4 id="编程导航的-oj-判题项目"><a class="header" href="#编程导航的-oj-判题项目">编程导航的 OJ 判题项目</a></h4>
+<p>在 <a href="https://www.codefather.cn/course/1790980707917017089">编程导航的 OJ 判题项目 </a>的代码沙箱模块中，使用了模板方法模式来统一管理 Java 原生沙箱和 Docker 沙箱的执行流程。由于两者的核心业务流程基本一致，包括保存文件、编译代码、执行程序、收集结果、清理文件和错误处理等操作，且部分步骤可通用，因此通过抽象出统一模板以减少重复实现。</p>
+<p>具体做法是，定义了一个抽象的沙箱模板类，其中用一个模板方法固定了执行流程的整体结构，并将每个处理环节抽象成独立方法，允许子类根据需要进行重写。Java 原生沙箱和 Docker 沙箱分别继承该模板类，共享通用的处理逻辑，同时对差异化环节（如执行逻辑）进行自定义实现。通过这种方式，既避免了重复代码，也提高了流程的清晰度和系统的扩展性。</p>
+<p><img src="./img/100.png" alt=""></p>
+<h2 id="相关面试题"><a class="header" href="#相关面试题">相关面试题</a></h2>
+<p>可以在 <a href="https://www.mianshiya.com/">程序员面试刷题神器 - 面试鸭</a> 上获取到企业常问的设计模式面试题。比如：</p>
+<p>1）<a href="https://www.mianshiya.com/bank/1801559627969929217/question/1802939152477790209">什么是模板方法模式？一般用在什么场景？ </a></p>
+<p><img src="./img/101.png" alt=""></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../DesignPattern/17-备忘录模式.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../DesignPattern/19-迭代器模式.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../DesignPattern/17-备忘录模式.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../DesignPattern/19-迭代器模式.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

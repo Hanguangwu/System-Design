@@ -1,0 +1,450 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>8-装饰模式 - The Zen of Programming</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-4fa65084.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-df451732.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Zen of Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h2 id="什么是装饰模式"><a class="header" href="#什么是装饰模式">什么是<strong>装饰模式？</strong></a></h2>
+<p><strong>装饰模式</strong>（Decorator Pattern）是一种结构型设计模式，它的核心思想是：<strong>动态地给对象添加额外的功能，而不会影响到其他对象</strong>。</p>
+<p>打个比方，鱼皮早上去咖啡店点了一杯美式。服务员问：要不要加点牛奶？要不要来点奶泡？糖浆需不需要？鱼皮说全都加上！于是原本一杯普通的美式咖啡，就被加出了拿铁的感觉。每加一样东西，其实就是“包了一层新功能”，但我们并没有动到咖啡豆的底层逻辑（原始类），只是一步步往上叠加。</p>
+<p><img src="./img/117.png" alt=""></p>
+<p>这就是装饰模式的精髓：不改变原有对象的基础结构，通过外层的“装饰者”给它加新能力。在代码里，这种模式非常适合应对“对象功能扩展”的场景，比如日志增强、权限校验、性能监控等，既不污染原始逻辑，也很灵活组合。</p>
+<h2 id="为什么要使用装饰模式"><a class="header" href="#为什么要使用装饰模式">为什么要使用装饰模式？</a></h2>
+<p>我们在实际开发中经常会遇到这样一种情况：某个类已经实现了基本功能，但过了一阵子，需求变了，需要在原有基础上加功能。比如要加日志、加缓存、加权限控制……这些都不是核心业务逻辑，但却是必需的。</p>
+<p>这时候我们可能会想到继承。确实，继承是可以扩展功能。但一旦子类越来越多，继承层次就容易变得复杂，而且子类一旦继承了父类，就被绑死了，灵活性差。装饰模式正好解决了这个问题：它通过组合的方式，把附加功能封装成一个个装饰类，灵活地套在目标对象外面，不影响原始类结构，也不会破坏开放-封闭原则。</p>
+<p>为了让大家更好地感受到装饰模式的作用，以文本渲染为例，我们需要为文本添加不同的样式（加粗、颜色等）。让我们来看看使用和不使用装饰模式的区别：</p>
+<p><img src="./img/118.png" alt=""></p>
+<p>通过对比可以看出，不使用装饰模式时，我们需要为每种文本样式的组合创建单独的方法，这导致了方法的数量过多、代码重复、难以维护等问题。每当需要添加新的样式或组合时，都需要创建新的方法，增加了开发成本。</p>
+<p>而使用装饰模式后，我们通过 <code>TextDecorator</code> 类将样式功能动态地添加到文本上，实现了功能的灵活组合。装饰模式通过组合的方式动态地给对象添加新的职责，使得代码结构更加清晰，扩展性更强。这种实现方式不仅减少了类的数量，还使得添加新的样式变得更加简单。</p>
+<h2 id="装饰模式的应用场景"><a class="header" href="#装饰模式的应用场景">装饰模式的应用场景</a></h2>
+<p>举一些开发中典型的应用场景：</p>
+<ul>
+<li>动态增加功能或行为：例如，在电商系统中，用户可能选择多个优惠（如打折、优惠券、积分抵扣等）。这些优惠可以通过装饰模式动态地为订单增加不同的优惠功能，而不需要修改原始的订单类。每种优惠可以视为一个装饰类，独立实现不同的行为。</li>
+<li>输入输出流处理：在文件读取和写入操作中，经常使用装饰模式。例如，Java 的 I/O 流操作就使用了装饰模式。你可以使用 <code>BufferedReader</code> 装饰 <code>FileReader</code>，为其增加缓冲功能，而不需要改变 <code>FileReader</code> 的原始实现。</li>
+<li>日志系统功能增强：在日志记录系统中，通常有多种日志格式或输出方式。可以使用装饰模式为日志对象动态增加不同的功能，如输出到文件、控制台、远程服务器等。每种日志输出方式可以作为一个装饰器，透明地增加额外的功能。</li>
+<li>文本渲染增强系统：在开发富文本编辑器或日志输出组件时，经常会需要在文本基础上增加不同的功能，比如加粗、加下划线、加颜色等等。如果直接在原有类中添加这些功能，会导致类膨胀、职责混乱。用装饰模式可以在不改变原有类的基础上，为其动态添加功能，保持设计的灵活性和扩展性。</li>
+</ul>
+<h2 id="装饰模式的基本结构"><a class="header" href="#装饰模式的基本结构">装饰模式的基本结构</a></h2>
+<p>装饰模式具有的角色和职责：</p>
+<p>1）组件接口（Component）：定义对象的接口，所有的具体组件和装饰器都实现这个接口。</p>
+<p>2）具体组件（ConcreteComponent）：就是原始对象，定义了核心的功能实现。</p>
+<p>3）抽象装饰器（Decorator）：实现组件接口，内部持有一个组件对象（也就是被装饰的对象）。</p>
+<p>4）具体装饰器（ConcreteDecorator）：继承抽象装饰器，负责给组件对象添加新的功能。</p>
+<p>下面用一张类图帮大家更直观地理解装饰模式的结构：</p>
+<p><img src="./img/119.png" alt=""></p>
+<h2 id="装饰模式的实现"><a class="header" href="#装饰模式的实现">装饰模式的实现</a></h2>
+<p>下面就以 “文本渲染增强” 为例，我们用装饰模式实现一个支持动态添加样式的文本组件系统。</p>
+<p>1）定义文本组件接口：声明所有文本类必须实现的 render() 方法</p>
+<pre><code class="language-java">public interface TextComponent {
+    String render();
+}
+</code></pre>
+<p>这一步定义了所有文本相关组件的共同接口，保证后续的具体文本类和装饰器都遵循统一的调用规范。</p>
+<p>2）实现基本文本类：作为被装饰的核心组件</p>
+<pre><code class="language-java">public class PlainText implements TextComponent {
+    private String content;
+
+    public PlainText(String content) {
+        this.content = content;
+    }
+
+    @Override
+    public String render() {
+        return content;
+    }
+}
+</code></pre>
+<p>这一步提供了一个最基础的文本实现，它不包含任何格式，用来作为装饰链的起点。</p>
+<p>3）定义装饰器抽象类：用于包裹基础组件并扩展功能</p>
+<pre><code class="language-java">public abstract class TextDecorator implements TextComponent {
+    protected TextComponent component;
+
+    public TextDecorator(TextComponent component) {
+        this.component = component;
+    }
+}
+</code></pre>
+<p>这是装饰器的通用抽象父类，它持有一个 TextComponent 实例，允许我们在其基础上扩展功能，同时保持统一接口。</p>
+<p>4）实现具体装饰器类（加粗、加颜色）</p>
+<pre><code class="language-java">public class BoldDecorator extends TextDecorator {
+    public BoldDecorator(TextComponent component) {
+        super(component);
+    }
+
+    @Override
+    public String render() {
+        return "&lt;b&gt;" + component.render() + "&lt;/b&gt;";
+    }
+}
+
+public class ColorDecorator extends TextDecorator {
+    private String color;
+
+    public ColorDecorator(TextComponent component, String color) {
+        super(component);
+        this.color = color;
+    }
+
+    @Override
+    public String render() {
+        return "&lt;span style='color:" + color + "'&gt;" + component.render() + "&lt;/span&gt;";
+    }
+}
+</code></pre>
+<p>这些是具体的功能增强类，用来给文本添加 HTML 样式，比如加粗和着色。每个装饰器都只负责一件事，职责单一，组合灵活。</p>
+<p>5）客户端调用示例：按需组合装饰器，动态增强文本</p>
+<pre><code class="language-java">public class Client {
+    public static void main(String[] args) {
+        TextComponent text = new PlainText("Hello, Decorator!");
+
+        // 添加加粗
+        text = new BoldDecorator(text);
+
+        // 添加红色字体
+        text = new ColorDecorator(text, "red");
+
+        System.out.println("最终渲染结果：");
+        System.out.println(text.render());
+    }
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code class="language-plain">最终渲染结果：
+&lt;span style='color:red'&gt;&lt;b&gt;Hello, Decorator!&lt;/b&gt;&lt;/span&gt;
+
+</code></pre>
+<p>这端代码示例通过组合多个装饰器实现了“加粗+红色”两个功能的叠加。原始组件未被修改，所有增强功能都是通过包裹实现的，体现了装饰模式的核心思想：包装而非继承，扩展而非修改。</p>
+<h2 id="装饰模式的优缺点"><a class="header" href="#装饰模式的优缺点">装饰模式的优缺点</a></h2>
+<h3 id="优点"><a class="header" href="#优点">优点</a></h3>
+<ul>
+<li><strong>扩展功能更灵活</strong>：装饰模式允许你在不修改原始类代码的前提下，动态地给对象增加额外的功能。比起继承，它更灵活，也更符合开闭原则，特别适合功能经常变动的场景。</li>
+<li><strong>避免类过多</strong>：如果用继承来应对各种功能组合，很容易导致子类数量成倍增加，维护压力大。装饰模式通过“包装”的方式，把功能拆成一个个装饰类，组合使用，结构更清晰。</li>
+<li><strong>可以组合使用</strong>：多个装饰类可以灵活叠加，按需组合功能，像搭积木一样，自由度高，不用预先规划好所有情况，尤其适合处理功能可选、可叠加的业务逻辑。</li>
+</ul>
+<h3 id="缺点"><a class="header" href="#缺点">缺点</a></h3>
+<ul>
+<li><strong>调试比较麻烦</strong>：因为装饰模式是通过一层一层地包装对象的，有时候为了看清楚一个操作是在哪个环节做的，你可能得顺着一长串“包装链”去追踪，调试起来不太友好。</li>
+<li><strong>增加了系统复杂度</strong>：虽然类过多的问题解决了，但类之间的关系变得更抽象了，理解和使用都需要一定的学习成本。特别是对于刚接触装饰模式的人来说，不太容易一下子理清谁在装饰谁。</li>
+<li><strong>可能影响性能</strong>：如果装饰链太长，每次调用方法都要经过多层对象转发，虽然每层逻辑可能都很轻，但叠加起来也可能对性能有些影响，尤其是在高频调用场景下。</li>
+</ul>
+<h2 id="扩展知识---源码分析"><a class="header" href="#扩展知识---源码分析">扩展知识 - 源码分析</a></h2>
+<h3 id="开源框架中的应用"><a class="header" href="#开源框架中的应用">开源框架中的应用</a></h3>
+<h4 id="1jdk"><a class="header" href="#1jdk">1、JDK</a></h4>
+<p>我们先看 JDK 里面最典型的装饰模式实现，就是在 IO 流这一块，比如我们经常用到的 <code>BufferedReader</code>、<code>BufferedInputStream</code>。</p>
+<p>它们并不是直接读取数据，而是包装了底层的原始输入流，通过加一层缓冲机制来提升读取效率。我们看下实际的类结构：</p>
+<pre><code class="language-java">
+public class BufferedReader extends Reader {
+    private Reader in; // 被包装的 Reader
+
+    public BufferedReader(Reader in) {
+        this(in, defaultCharBufferSize);
+    }
+
+    public String readLine() throws IOException {
+        // 加缓冲逻辑读取一整行
+    }
+}
+
+</code></pre>
+<pre><code class="language-java">// 使用方式
+Reader reader = new FileReader("test.txt");
+BufferedReader bufferedReader = new BufferedReader(reader);
+String line = bufferedReader.readLine(); 
+
+</code></pre>
+<p>可以看到，我们通过 <code>BufferedReader</code> 对 <code>FileReader</code> 做了包装，但并没有去动原始的 <code>FileReader</code> 类逻辑，这就符合了装饰模式的基本结构。</p>
+<p>我们看下类图：</p>
+<p><img src="./img/120.png" alt=""></p>
+<p>从类图能看出来，<code>BufferedReader</code> 和 <code>FileReader</code> 都继承自同一个抽象类 <code>Reader</code>，然后通过组合的方式包装了一个 <code>Reader</code> 类型的对象，实现了增强功能但不破坏结构的目的。</p>
+<h4 id="2spring-框架"><a class="header" href="#2spring-框架">2、Spring 框架</a></h4>
+<p>我们在开发 Web 应用时经常接触到 <code>HttpServletRequest</code> 和 <code>HttpServletResponse</code>，它们代表了请求和响应对象。而 <code>HttpServletRequestWrapper</code> 和 <code>HttpServletResponseWrapper</code> 正是 Spring Web 模块中对这两个对象的装饰器实现。这两个类的作用是作为一个“中间壳”，把原始的 <code>HttpServletRequest</code> 包装起来，默认是把所有方法都“原样转发”给原始的 request 对象。</p>
+<p>比如<code>ContentCachingRequestWrapper</code>，这个类用来增强原始的 <code>HttpServletRequest</code>，让我们可以重复读取请求体。我们来看下源码：</p>
+<pre><code class="language-java">public class ContentCachingRequestWrapper extends HttpServletRequestWrapper {
+    private final ByteArrayOutputStream cachedContent;
+
+    public ContentCachingRequestWrapper(HttpServletRequest request) {
+        super(request);
+    }
+
+    @Override
+    public ServletInputStream getInputStream() throws IOException {
+        if (this.inputStream == null) {
+            // 缓存请求体，方便后面重复读取
+            this.inputStream = new ContentCachingInputStream(this.getRequest().getInputStream());
+        }
+
+        return this.inputStream;
+    }
+
+    public byte[] getContentAsByteArray() {
+        return this.cachedContent.toByteArray();
+    }
+}
+
+</code></pre>
+<p>它继承自 <code>HttpServletRequestWrapper</code>，后者本身就已经是对 <code>HttpServletRequest</code> 的包装。Spring 的 <code>ContentCachingRequestWrapper</code> 再次装饰这个对象，增强了“请求体可重复读取”的能力，常用于日志记录、过滤器链等场景。</p>
+<p>除了使用 Spring 已有的，我们还可以自定义请求包装器。举个场景，比如我们想在读取参数之前先统一打印日志，或者对请求中的某个参数做一下格式处理。如果我们直接在业务代码里每次处理请求都手动加判断，那既重复又容易出错。这时候我们可以自己继承<code>HttpServletRequestWrapper</code>类，实现一个自定义请求增强器：</p>
+<pre><code class="language-java">public class LogRequestWrapper extends HttpServletRequestWrapper {
+    public LogRequestWrapper(HttpServletRequest request) {
+        super(request);
+    }
+
+    @Override
+    public String getParameter(String name) {
+        String value = super.getParameter(name);
+        System.out.println("参数名：" + name + "，值：" + value);
+        return value;
+    }
+}
+</code></pre>
+<p>然后在过滤器或拦截器中替换原始请求：</p>
+<pre><code class="language-java">chain.doFilter(new LogRequestWrapper(request), response);
+
+</code></pre>
+<p>这种“增强不侵入”的方式，就是典型的装饰模式应用。Spring 本身很多地方都是通过这种“包装器 + 委托”结构来实现灵活扩展的。</p>
+<h3 id="优势和作用"><a class="header" href="#优势和作用">优势和作用</a></h3>
+<p>通过上述的源码分析，我们可以再次总结下装饰模式的作用。</p>
+<h4 id="1增强功能不影响原有结构"><a class="header" href="#1增强功能不影响原有结构">1、<strong>增强功能不影响原有结构</strong></a></h4>
+<p><code>BufferedReader</code> 和 <code>BufferedInputStream</code> 并不是通过继承原始类来加功能，而是通过包装已有对象来增强行为，这种方式不会影响原始类结构；Servlet 中我们也能通过包装 <code>HttpServletRequest</code> 或 <code>HttpServletResponse</code> 来扩展功能，而无需修改原有请求响应逻辑。</p>
+<h4 id="2支持链式组合增强更灵活"><a class="header" href="#2支持链式组合增强更灵活">2、支持链式组合，增强更灵活</a></h4>
+<p>装饰器可以一层层套，比如 <code>BufferedInputStream</code> 可以再包一层 <code>DataInputStream</code>；同样，在 Servlet 中也可以对请求对象连续包装多个增强，比如日志、加解密、参数过滤等，组合方式灵活，使用更自由。</p>
+<h4 id="3逻辑清晰职责解耦"><a class="header" href="#3逻辑清晰职责解耦">3、逻辑清晰、职责解耦</a></h4>
+<p>像日志、转换、校验这类与业务无关的增强逻辑，都可以通过装饰器独立出来，既避免了业务类臃肿，也方便维护和替换，IO 和 Servlet 场景都很适合这样做。</p>
+<h2 id="相关项目"><a class="header" href="#相关项目">相关项目</a></h2>
+<h4 id="编程导航的手写-rpc-框架项目"><a class="header" href="#编程导航的手写-rpc-框架项目">编程导航的手写 RPC 框架项目</a></h4>
+<p>在 <a href="https://www.codefather.cn/course/1768543954720022530">编程导航的手写 RPC 框架项目</a> 中，处理 Vert.x TCP 通信中粘包和半包的问题时，使用了装饰者模式对原有处理器进行了增强。由于消息体长度不固定，采用了 Vert.x 内置的 <code>RecordParser</code> 并通过拆分读取的方式：先读取请求体长度，再按该长度完整读取消息体，从而解决变长消息的拆包问题。</p>
+<p>为实现这一逻辑，定义了一个 Wrapper 类对原有的 TCP 处理器进行封装，借助装饰者模式，在不修改原有处理器代码的前提下，扩展了解析能力。使用时只需用该 Wrapper 包装原处理器即可，使系统在处理粘包半包问题时更具灵活性，也提升了整体的可维护性。</p>
+<p><img src="./img/121.png" alt=""></p>
+<h2 id="相关面试题"><a class="header" href="#相关面试题">相关面试题</a></h2>
+<p>可以在 <a href="https://www.mianshiya.com/">程序员面试刷题神器 - 面试鸭</a> 上获取到企业常问的设计模式面试题。比如：</p>
+<p>1）<a href="https://www.mianshiya.com/bank/1801559627969929217/question/1803766849256890369">什么是装饰器模式？一般用在什么场景？ </a></p>
+<p><img src="./img/122.png" alt=""></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../DesignPattern/7-代理模式.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../DesignPattern/9-外观模式.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../DesignPattern/7-代理模式.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../DesignPattern/9-外观模式.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

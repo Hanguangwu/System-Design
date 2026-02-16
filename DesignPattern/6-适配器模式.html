@@ -1,0 +1,498 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>6-适配器模式 - The Zen of Programming</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-4fa65084.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-df451732.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Zen of Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h2 id="什么是适配器模式"><a class="header" href="#什么是适配器模式">什么是适配器模式?</a></h2>
+<p><strong>适配器模式</strong>（Adapter pattern）是一种结构型设计模式，通过创建一个适配器类，<strong>将一个接口转换成客户端所期望的另一个接口</strong>。</p>
+<p>换句话说，就是当两个东西原本接口不匹配，但我们又想让它们协作时，就可以用一个“适配器”做中间桥梁。</p>
+<p>这就好比鱼皮出差带了个电子设备，接口是 Type-C 接口的，但酒店的充电器的头是 USB 接口。这时候咋办？鱼皮肯定不会改电线、换设备，而是拿出随身带的“接口转换器”，直接搞定。这转换器就是适配器，负责在“不兼容”之间搭建桥梁，让两个原本对不上号的东西顺利协作。</p>
+<p><img src="./img/49.png" alt=""></p>
+<p>在代码里，我们也经常会遇到类似的问题：老接口和新系统不兼容，或者第三方库的接口和我们预期的不一样，这时候适配器就派上用场了。它就像是个“翻译器”或“转换器”，让两个本不兼容的对象可以正常沟通和工作。</p>
+<h2 id="为什么要使用适配器模式"><a class="header" href="#为什么要使用适配器模式">为什么要使用适配器模式？</a></h2>
+<p>适配器模式的目的是为了应对不同类或系统间接口不兼容的问题。在开发过程中，我们经常会遇到需要与已有系统或第三方库进行交互的情况。如果这些系统的接口和我们自己的系统不兼容，直接进行交互会很困难，这时就可以使用适配器模式。通过创建一个适配器，我们能够将第三方库或旧系统的接口转化为自己需要的接口，从而避免了大规模修改现有代码的复杂性和不必要的风险。适配器模式使得代码更加灵活，能够平滑过渡到不同的技术栈和系统，同时还可以在不改变客户端代码的前提下，扩展和引入新的功能。</p>
+<p>为了让大家更好地感受到适配器模式的作用，以音频播放器为例，我们需要支持多种音频格式（MP3、VLC、MP4等）的播放。让我们来看看使用和不使用适配器模式的区别：</p>
+<p><img src="./img/50.png" alt=""></p>
+<p>通过对比可以看出，不使用适配器模式时，我们需要在 <code>AudioPlayer</code> 类中通过条件判断来处理不同格式的音频播放，这导致了代码耦合度高、违反开闭原则、难以扩展等问题。每当需要支持新的音频格式时，都需要修改现有代码，增加了维护成本。</p>
+<p>而使用适配器模式后，我们通过 <code>MediaAdapter</code> 类将不同格式的播放器适配到统一的 <code>AdvanceMediaPlayer</code> 接口，实现了接口的兼容性。适配器模式将不兼容的接口转换为可兼容的接口，使得代码更加灵活和可扩展。这种实现方式不仅降低了代码耦合度，还使得添加新的音频格式支持变得更加简单，提高了代码的可维护性。</p>
+<h2 id="适配器模式的应用场景"><a class="header" href="#适配器模式的应用场景">适配器模式的应用场景</a></h2>
+<p>举一些开发中典型的应用场景：</p>
+<ul>
+<li>旧系统与新系统对接：在企业级应用中，许多老旧系统的接口不符合现代需求（例如，返回的数据格式不同、方法签名不匹配等），通过适配器模式可以将新系统所需的接口转换成老系统能提供的格式，使新旧系统能够无缝对接。</li>
+<li>不同数据库引擎访问：在一些跨平台或跨数据库的应用中，可能会同时使用 MySQL、PostgreSQL、Oracle 等不同数据库。通过适配器模式，可以将不同数据库的查询接口统一，使得开发人员可以通过统一的 API 访问不同的数据库。</li>
+<li>不同格式的文件读取与处理：例如系统需要处理不同格式的文件（如 CSV、Excel、JSON、XML 等）。在没有统一接口的情况下，可以使用适配器模式为每种文件格式提供适配器，使得客户端可以通过统一的接口进行文件读取和数据解析。</li>
+<li>音频播放器支持多种格式播放：不同音频格式的播放实现通常来源于不同的解码库，接口风格也各不相同。可以为每种格式封装一个适配器，统一实现一个播放器接口，让主播放器只关心“播放”这个动作，不关心具体格式和库。</li>
+</ul>
+<h2 id="适配器模式基本结构"><a class="header" href="#适配器模式基本结构">适配器模式基本结构</a></h2>
+<p>适配器模式具有的角色和职责：</p>
+<p>1）目标接口（Target）：客户端希望使用的接口。</p>
+<p>2）适配器类（Adapter）：实现了目标接口，并且通过委托的方式将请求转换为适配的接口调用。</p>
+<p>3）适配者类（Adaptee）：已有的、需要适配的类。</p>
+<p>4）客户端（Client）：通过目标接口与系统交互的代码。</p>
+<p>下面用一张类图帮大家更直观地理解适配器模式的结构：</p>
+<p><img src="./img/51.png" alt=""></p>
+<h2 id="适配器模式代码实现"><a class="header" href="#适配器模式代码实现">适配器模式代码实现</a></h2>
+<p>下面就以 “多格式音频播放” 为例，我们用适配器模式实现一个简单的播放器系统。</p>
+<p>1）定义目标接口：我们播放器原本支持的统一播放接口</p>
+<pre><code class="language-java">public interface AudioPlayer {
+    void play(String audioType, String fileName);
+}
+</code></pre>
+<p>这一步是适配器模式的目标接口，它规定了客户端希望使用的标准功能（比如只认 play 方法），这也是适配器的“插口”。</p>
+<p>2）定义高级媒体接口：表示系统暂时不支持但需要适配的新格式</p>
+<pre><code class="language-java">public interface AdvancedMediaPlayer {
+    void playVlc(String fileName);
+    void playMp4(String fileName);
+}
+</code></pre>
+<p>这一步是被适配的接口，定义了外部不兼容的格式支持方法，比如 <code>playVlc()</code> 和 <code>playMp4()</code>，这些接口不能直接被老播放器识别，需要一个适配器做中间转换。</p>
+<p>3）实现高级播放器：实现各个具体格式的播放逻辑</p>
+<pre><code class="language-java">public class VlcPlayer implements AdvancedMediaPlayer {
+    @Override
+    public void playVlc(String fileName) {
+        System.out.println("播放VLC格式的文件: " + fileName);
+    }
+
+    @Override
+    public void playMp4(String fileName) {
+        // 什么也不做
+    }
+}
+
+public class Mp4Player implements AdvancedMediaPlayer {
+    @Override
+    public void playVlc(String fileName) {
+        // 什么也不做
+    }
+
+    @Override
+    public void playMp4(String fileName) {
+        System.out.println("播放MP4格式的文件: " + fileName);
+    }
+}
+</code></pre>
+<p>这一步是具体的实现类，真正负责播放 <code>.mp4</code> 和 <code>.vlc</code> 文件，但它们的接口和我们播放器的 <code>AudioPlayer</code> 不兼容，不能直接使用。</p>
+<p>4）创建适配器类：桥接高级播放器和目标接口</p>
+<pre><code class="language-java">public class MediaAdapter implements AudioPlayer {
+    private AdvancedMediaPlayer advancedMediaPlayer;
+
+    public MediaAdapter(String audioType) {
+        if (audioType.equalsIgnoreCase("vlc")) {
+            advancedMediaPlayer = new VlcPlayer();
+        } else if (audioType.equalsIgnoreCase("mp4")) {
+            advancedMediaPlayer = new Mp4Player();
+        }
+    }
+
+    @Override
+    public void play(String audioType, String fileName) {
+        if (audioType.equalsIgnoreCase("vlc")) {
+            advancedMediaPlayer.playVlc(fileName);
+        } else if (audioType.equalsIgnoreCase("mp4")) {
+            advancedMediaPlayer.playMp4(fileName);
+        }
+    }
+}
+</code></pre>
+<p>这一步是适配器的核心，通过 <code>MediaAdapter</code> 将外部的高级播放器“包一层”，让它看起来像是 <code>AudioPlayer</code> 的实现，这样旧系统就可以无感接入新格式。</p>
+<p>5）实现默认播放器：支持 MP3，其他格式交给适配器</p>
+<pre><code class="language-java">public class DefaultAudioPlayer implements AudioPlayer {
+    private MediaAdapter mediaAdapter;
+
+    @Override
+    public void play(String audioType, String fileName) {
+        if (audioType.equalsIgnoreCase("mp3")) {
+            System.out.println("播放MP3格式的文件: " + fileName);
+        } else if (audioType.equalsIgnoreCase("mp4") || audioType.equalsIgnoreCase("vlc")) {
+            mediaAdapter = new MediaAdapter(audioType);
+            mediaAdapter.play(audioType, fileName);
+        } else {
+            System.out.println("不支持的格式: " + audioType);
+        }
+    }
+}
+</code></pre>
+<p>这一步是客户端真正使用的播放器类，对外提供统一的 <code>play()</code> 方法，内部智能判断是否需要适配器介入，扩展性和兼容性都非常好。</p>
+<p>6）客户端调用示例</p>
+<pre><code class="language-java">public class Client {
+    public static void main(String[] args) {
+        AudioPlayer player = new DefaultAudioPlayer();
+        player.play("mp3", "歌曲.mp3");
+        player.play("mp4", "电影.mp4");
+        player.play("vlc", "直播秀.vlc");
+        player.play("avi", "老的媒体格式.avi");
+    }
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code class="language-plain">播放MP3格式的文件: 歌曲.mp3
+播放MP4格式的文件: 电影.mp4
+播放VLC格式的文件: 直播秀.vlc
+不支持的格式: avi
+</code></pre>
+<p>客户端调用展示了适配器的使用场景，原本只支持 <code>.mp3</code> 的播放器，现在通过 <code>MediaAdapter</code> 轻松扩展到支持 <code>.mp4</code> 和 <code>.vlc</code>，而不需要修改原来的接口和逻辑，这就是适配器模式的优势。</p>
+<h2 id="适配器模式的优缺点"><a class="header" href="#适配器模式的优缺点">适配器模式的优缺点</a></h2>
+<h3 id="优点"><a class="header" href="#优点">优点</a></h3>
+<ul>
+<li><strong>解耦系统</strong>：适配器模式通过将不兼容的接口适配为客户端所需的接口，能够有效地解耦系统中的不同模块，使得模块之间的依赖关系更加松散，增强系统的灵活性。</li>
+<li><strong>复用现有类</strong>：通过适配器模式，可以复用已有的类或库，而无需修改原有代码。适配器将现有类的接口转换为需要的接口，从而使不兼容的类能够共同工作。</li>
+<li><strong>增强可扩展性</strong>：适配器模式提供了一种灵活的方式来扩展现有系统，允许不同的系统组件无缝集成。可以通过添加新的适配器来支持新的接口和功能，而不影响现有系统的正常运行。</li>
+<li><strong>简化接口</strong>：适配器模式可以将复杂的接口转换为简单的接口，简化客户端代码的使用，提升开发效率。</li>
+</ul>
+<h3 id="缺点"><a class="header" href="#缺点">缺点</a></h3>
+<ul>
+<li><strong>增加系统复杂性</strong>：适配器模式引入了额外的适配器类，尤其在适配多个接口时，可能导致系统中的类数量增加，从而增加了系统的复杂性和维护成本。</li>
+<li><strong>性能开销</strong>：每次调用适配器时，都需要通过适配器进行额外的转化处理，这可能会引入一定的性能开销，尤其在频繁调用的场景下，性能损失可能不可忽视。</li>
+<li><strong>潜在的过度使用</strong>：适配器模式的滥用可能导致设计过度复杂，特别是在接口之间差异较小时，可能不值得引入适配器，而直接通过调整接口即可解决问题。过多的适配器可能导致系统变得难以理解和维护。</li>
+<li><strong>不适合所有场景</strong>：适配器模式主要适用于接口不兼容的情况，对于接口设计不合理的情况，可能并不适用。过度依赖适配器可能掩盖了系统设计的问题，造成长期维护上的困难。</li>
+</ul>
+<h2 id="扩展知识---源码分析"><a class="header" href="#扩展知识---源码分析">扩展知识 - 源码分析</a></h2>
+<h3 id="开源框架中的应用"><a class="header" href="#开源框架中的应用">开源框架中的应用</a></h3>
+<h4 id="1jdk"><a class="header" href="#1jdk">1、JDK</a></h4>
+<p>我们在用 JDK 提供的一些工具类时，其实已经接触过适配器模式了。最常见的一个例子是 <code>java.util.Arrays#asList()</code> 这个方法。这个方法的作用，是把一个普通的数组“包装”成一个 List 接口的实现。它的底层实现就是一个典型的适配器类。</p>
+<pre><code class="language-java">public static &lt;T&gt; List&lt;T&gt; asList(T... a) {
+    return new ArrayList&lt;&gt;(a);
+}
+
+// 这是 Arrays 的静态内部类，不是 java.util.ArrayList
+private static class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt;
+implements RandomAccess, java.io.Serializable
+{
+    private static final long serialVersionUID = -2764017481108945198L;
+    private final E[] a;
+
+    ArrayList(E[] array) {
+        a = Objects.requireNonNull(array);
+    }
+    // ...省略其他代码
+}
+
+</code></pre>
+<p>这个 <code>ArrayList</code> 并没有重新设计数据结构，而是持有了原始数组的引用，底层依旧是数组。但是通过继承 <code>AbstractList</code>，它变成了 <code>List</code> 类型的实例，对外暴露的就是一个标准 List 接口。这就是一种对象适配器模式，通过组合已有对象（数组），将它包装成期望的接口（List）。</p>
+<p>另一个常用的例子是 <code>InputStreamReader</code>，这个类的作用是把一个字节流（<code>InputStream</code>）适配成一个字符流（<code>Reader</code>）：</p>
+<pre><code class="language-java">public class InputStreamReader extends Reader {
+    private final StreamDecoder sd;
+
+      // 构造方法
+      public InputStreamReader(InputStream in) {
+        super(in);
+        try {
+            sd = StreamDecoder.forInputStreamReader(in, this, (String)null); // ## check lock object
+        } catch (UnsupportedEncodingException e) {
+            // The default encoding should always be available
+            throw new Error(e);
+        }
+    }
+
+    // 调用 StreamDecoder 的 read()，将字节转字符
+    public int read(char cbuf[], int offset, int length) throws IOException {
+        return sd.read(cbuf, offset, length);
+    }
+}
+
+</code></pre>
+<h4 id="2spring-框架"><a class="header" href="#2spring-框架">2、Spring 框架</a></h4>
+<p>在 Spring MVC 中，<code>HandlerAdapter</code> 是一个非常典型的适配器模式的实现。我们知道，Spring MVC 中的处理器（Controller）有很多种形式，比如注解方式的 <code>@RequestMapping</code>，实现接口的 <code>HttpRequestHandler</code>。这些处理器的定义方式不同，调用方法也不一样，但 <code>DispatcherServlet</code> 是整个请求的统一入口。它不可能针对每种 Handler 都写死调用逻辑。这个时候，适配器模式就派上了用场。</p>
+<p>我们来看下 <code>HandlerAdapter</code>的接口定义：</p>
+<pre><code class="language-java">public interface HandlerAdapter {
+    // 判断当前适配器是否支持给定的 handler 类型（即 Controller 对象）
+    boolean supports(Object handler);
+
+    // 执行 handler 的逻辑处理，并返回 ModelAndView（用于渲染视图）
+    @Nullable
+    ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception;
+
+}
+</code></pre>
+<p>Spring 提供了多个不同的适配器实现，比如：</p>
+<ul>
+<li><code>RequestMappingHandlerAdapter</code>：用来支持注解方式的 <code>@RequestMapping</code> 方法；</li>
+<li><code>HttpRequestHandlerAdapter</code>：用来支持实现了 <code>HttpRequestHandler</code> 接口的类；</li>
+<li><code>SimpleControllerHandlerAdapter</code>：用来支持实现了 <code>Controller</code> 接口的处理器。</li>
+</ul>
+<p>来看下 <code>HttpRequestHandlerAdapter</code> 的结构：</p>
+<pre><code class="language-java">public class HttpRequestHandlerAdapter implements HandlerAdapter {
+
+   	@Override
+	public boolean supports(Object handler) {
+		return (handler instanceof HttpRequestHandler);
+	}
+
+	@Override
+	@Nullable
+	public ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler)
+			throws Exception {
+
+		((HttpRequestHandler) handler).handleRequest(request, response);
+		return null;
+	}
+    // 省略其他代码...
+}
+
+</code></pre>
+<p>我们可以看到，核心逻辑在于判断是否支持某种类型的 Handler，然后进行适配调用。</p>
+<p>而 DispatcherServlet 的处理流程中，也有这样一段逻辑：</p>
+<pre><code class="language-java">// 从已注册的 HandlerAdapter 列表中，选择一个支持指定 handler 的适配器。
+protected HandlerAdapter getHandlerAdapter(Object handler) throws ServletException {
+    if (this.handlerAdapters != null) {
+        for (HandlerAdapter adapter : this.handlerAdapters) {
+            if (adapter.supports(handler)) {
+                return adapter;
+            }
+        }
+    }
+    throw new ServletException("No adapter for handler [" + handler +
+                               "]: The DispatcherServlet configuration needs to include a HandlerAdapter that supports this handler");
+}
+</code></pre>
+<p>这就是 Spring 中典型的<strong>接口适配器</strong>模式：通过不同的 HandlerAdapter 实现类，把各种处理器适配成统一的执行模型。</p>
+<p>为了更清晰地理解这个结构，我们用一张类图表示出 Spring MVC 中适配器模式的关键类之间的关系：</p>
+<p><img src="./img/52.png" alt=""></p>
+<p>在这个类图中，我们可以看到 <code>DispatcherServlet</code> 只依赖接口 <code>HandlerAdapter</code>，而不直接依赖任何具体实现类。新增新的处理器类型时，只需要实现一个新的 <code>HandlerAdapter</code>，完全符合开闭原则。</p>
+<h3 id="优势和作用"><a class="header" href="#优势和作用">优势和作用</a></h3>
+<p>通过上述的源码分析，我们可以再次总结下适配器模式的作用。</p>
+<h4 id="1提升系统的兼容性和复用能力"><a class="header" href="#1提升系统的兼容性和复用能力">1、提升系统的兼容性和复用能力</a></h4>
+<p>适配器模式的最大作用就是可以把已有的功能和新的接口标准“对接”起来，避免重复开发，尤其在集成第三方接口或老系统时非常有用。比如我们想复用一个只支持 <code>InputStream</code> 的工具类，但我们的系统是基于字符流的，就可以用 <code>InputStreamReader</code> 做适配。</p>
+<h4 id="2解耦代码结构方便扩展"><a class="header" href="#2解耦代码结构方便扩展">2、解耦代码结构，方便扩展</a></h4>
+<p>在 Spring MVC 中，不同的 Controller 类型通过不同的 <code>HandlerAdapter</code> 进行适配，<code>DispatcherServlet</code> 完全不需要关心 Controller 的具体实现逻辑。这种结构的好处就是扩展性强，我们可以根据需求新增 handler 类型，而不会影响原有逻辑。</p>
+<h4 id="3遵循开闭原则提高可维护性"><a class="header" href="#3遵循开闭原则提高可维护性">3、遵循开闭原则，提高可维护性</a></h4>
+<p>所有的适配器都是通过实现同一个接口来对接系统核心逻辑，这种结构天然符合“对扩展开放，对修改封闭”的设计原则。系统维护起来更容易，新增功能也更稳定。</p>
+<h2 id="相关项目"><a class="header" href="#相关项目">相关项目</a></h2>
+<h4 id="编程导航的聚合搜索项目"><a class="header" href="#编程导航的聚合搜索项目">编程导航的聚合搜索项目</a></h4>
+<p>在 <a href="https://www.codefather.cn/course/1790979621621641217">编程导航的聚合搜索项目</a> 中，使用了适配器模式来对接不同结构的数据源。系统内部定义了一套统一的数据源接入规范，要求所有数据源都支持根据关键词进行分页搜索。然而，部分第三方数据源的搜索方法参数格式与系统定义的接口不兼容，且无法直接修改双方的实现。</p>
+<p>为解决这一接口不一致的问题，引入了适配器模式。通过为这些不兼容的数据源编写适配器类，将其原有接口转换成系统所期望的标准接口，从而实现无侵入的接入。适配器类在不改动原始代码的前提下，实现了接口兼容，降低了耦合度，并提升了对接数据源的灵活性和复用性。</p>
+<p><img src="./img/53.png" alt=""></p>
+<h2 id="相关面试题"><a class="header" href="#相关面试题">相关面试题</a></h2>
+<p>可以在 <a href="https://www.mianshiya.com/">程序员面试刷题神器 - 面试鸭</a> 上获取到企业常问的设计模式面试题。比如：</p>
+<p>1）<a href="https://www.mianshiya.com/bank/1801559627969929217/question/1802171589225422850">什么是适配器模式？一般用在什么场景？ </a></p>
+<p><img src="./img/54.png" alt=""></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../DesignPattern/结构型模式.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../DesignPattern/7-代理模式.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../DesignPattern/结构型模式.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../DesignPattern/7-代理模式.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

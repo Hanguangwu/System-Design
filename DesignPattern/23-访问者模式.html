@@ -1,0 +1,604 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>23-访问者模式 - The Zen of Programming</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-4fa65084.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-df451732.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Zen of Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h2 id="什么是访问者模式"><a class="header" href="#什么是访问者模式">什么是访问者模式？</a></h2>
+<p><strong>访问者模式</strong>（Visitor Pattern）是一种行为型设计模式，它的核心思想是：<strong>将数据结构和作用于数据结构上的操作分离开来，让新的操作可以在不改变数据结构的前提下添加进来</strong>。<br>说白了，就是原来的类我不想动它，但我又想多做点事，这时候就请一个“外部角色”来干活。这个角色我们叫它“访问者”，它会主动去拜访每个对象，挨个执行自己的操作。</p>
+<p>比如我们鱼鸢网络公司有一个“员工信息系统”，里面记录了所有员工的信息。人事部想算绩效奖金，财务想算税，IT想统计电脑配置。按正常思路，如果都把这些逻辑写在员工类里，那类就炸了，职责全堆一起了。用访问者模式，我们就把这些操作分给不同的“访问者”对象，让它们自己来处理员工信息。</p>
+<p>每个员工类只需要提供一个 <code>accept(Visitor v)</code> 方法，访问者自己带着“我要干的事”过来，跟员工说：“我来算你这个月的工资”，员工高兴地点个头：“可以啊”，就完了。</p>
+<p><img src="./img/108.png" alt=""></p>
+<p>这个模式的最大好处就是：扩展性强，不破坏原结构，逻辑清晰，职责明确。如果后续新增一个“安全部门”来查岗，那只需要新增一个访问者类，不用动员工类半行代码。</p>
+<h2 id="为什么要使用访问者模式"><a class="header" href="#为什么要使用访问者模式">为什么要使用访问者模式？</a></h2>
+<p>在实际开发中，有时候我们面对的数据结构是相对稳定的，但是需要不断地增加新的功能或者操作。如果我们直接在数据结构的类里加方法，类会不断膨胀，变得难以维护，而且违背了单一职责原则和开闭原则。<br>通过访问者模式，我们可以很优雅地把新增的功能封装成访问者类，数据结构本身不动，只需要开放一个接受访问者的方法（accept方法），就可以实现新功能的扩展，大大提高了系统的灵活性和可维护性。</p>
+<p>为了让大家更好地感受到访问者模式的作用，以文档格式转换为例，我们需要实现一个能够将不同格式文档转换为HTML的系统。让我们来看看使用和不使用访问者模式的区别：</p>
+<p><img src="./img/109.png" alt=""></p>
+<p>通过对比可以看出，不使用访问者模式时，每个文档类都需要实现自己的转换逻辑，导致代码重复且难以维护。当需要添加新的转换方式（如转换为Markdown）时，需要修改所有文档类，违反了开闭原则。</p>
+<p>而使用访问者模式后，我们将转换逻辑从文档类中分离出来，封装在访问者类中。这种设计使得代码结构更加清晰，降低了耦合度，提高了代码的可维护性。同时，访问者模式也使得系统更容易扩展，添加新的转换方式只需要创建新的访问者类，而不需要修改现有文档类。</p>
+<h2 id="访问者模式的应用场景"><a class="header" href="#访问者模式的应用场景">访问者模式的应用场景</a></h2>
+<p>举一些开发中典型的应用场景：</p>
+<ul>
+<li>文档处理系统中的格式转换：对于一个文档处理系统，可能需要处理各种格式的文档（如PDF、Word、Excel等），而每种文档格式的解析与转换逻辑不同。访问者模式可以用来定义一个通用的操作接口，允许对不同类型的文档进行格式转换处理，扩展时无需修改文档类的代码，只需增加新的转换访问者。</li>
+<li>编译器设计：在编译器中，源代码通常会被解析为抽象语法树（AST）。不同类型的节点（如类、函数、表达式）会有不同的处理逻辑。使用访问者模式，编译器可以在不修改节点类的情况下，针对不同节点执行特定的操作，如语法检查、代码优化等。</li>
+</ul>
+<h2 id="访问者模式基本结构"><a class="header" href="#访问者模式基本结构">访问者模式基本结构</a></h2>
+<p>访问者模式具有的角色和职责：</p>
+<p>1）抽象元素（Element）：这是所有元素的基类或者接口，声明了接受访问者的<code>accept()</code>方法。每个元素类都会实现该方法，用来将访问者传递给自己。</p>
+<p>2）具体元素（ConcreteElement）：每个具体元素类都实现了抽象元素的<code>accept()</code>方法，通常这个方法会将自己传递给访问者，让访问者执行特定的操作。</p>
+<p>3）抽象访问者（Visitor）：定义了针对每个具体元素类的操作。每个具体访问者都实现这个接口，并且为每个元素类提供不同的操作。</p>
+<p>4）具体访问者（ConcreteVisitor）：实现了抽象访问者接口，并为每个具体元素提供特定的操作。</p>
+<p>5）对象结构（ObjectStructure）：包含一组元素对象，提供一个<code>accept()</code>方法，允许访问者访问结构中的每个元素。</p>
+<p>下面用一张类图帮大家更直观地理解访问者模式的结构：</p>
+<p><img src="./img/110.png" alt=""></p>
+<h2 id="访问者模式的实现"><a class="header" href="#访问者模式的实现">访问者模式的实现</a></h2>
+<p>下面就以 “文档格式转换” 为例，我们使用访问者模式实现一个简单的文档处理系统。</p>
+<p>1）定义访问者接口：声明针对不同文档类型的转换方法</p>
+<pre><code class="language-java">public interface DocumentVisitor {
+    void visit(PDFDocument pdf);
+    void visit(WordDocument word);
+    void visit(ExcelDocument excel);
+}
+</code></pre>
+<p>这一步定义了访问者的统一接口，每种文档类型（PDF、Word、Excel）对应一个访问方法，用于封装“对文档进行格式转换”的逻辑入口。</p>
+<p>2）定义文档元素接口：提供接受访问者的方法</p>
+<pre><code class="language-java">public interface Document {
+    void accept(DocumentVisitor visitor);
+}
+</code></pre>
+<p>每个文档类型实现这个接口，就可以“接受”访问者，调用相应的转换方法。通过双分派机制，把访问逻辑交给访问者处理，文档本身无需关心。</p>
+<p>3）实现具体文档类：如 PDF、Word、Excel</p>
+<pre><code class="language-java">public class PDFDocument implements Document {
+    private String content;
+
+    public PDFDocument(String content) {
+        this.content = content;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    @Override
+    public void accept(DocumentVisitor visitor) {
+        visitor.visit(this);
+    }
+}
+
+public class WordDocument implements Document {
+    private String content;
+
+    public WordDocument(String content) {
+        this.content = content;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    @Override
+    public void accept(DocumentVisitor visitor) {
+        visitor.visit(this);
+    }
+}
+
+public class ExcelDocument implements Document {
+    private String[][] table;
+
+    public ExcelDocument(String[][] table) {
+        this.table = table;
+    }
+
+    public String[][] getTable() {
+        return table;
+    }
+
+    @Override
+    public void accept(DocumentVisitor visitor) {
+        visitor.visit(this);
+    }
+}
+</code></pre>
+<p>每个文档类都实现 <code>accept</code> 方法，并在其中调用访问者的对应方法，把自身 <code>this</code> 传过去。这样访问者就可以获取到文档数据并处理，而文档类不需要知道“怎么处理”。</p>
+<p>4）实现具体访问者类：将文档转换为 HTML 格式</p>
+<pre><code class="language-java">public class HtmlExportVisitor implements DocumentVisitor {
+
+    @Override
+    public void visit(PDFDocument pdf) {
+        System.out.println("&lt;html&gt;&lt;body&gt;&lt;h1&gt;PDF 内容&lt;/h1&gt;&lt;p&gt;" + pdf.getContent() + "&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;");
+    }
+
+    @Override
+    public void visit(WordDocument word) {
+        System.out.println("&lt;html&gt;&lt;body&gt;&lt;h1&gt;Word 内容&lt;/h1&gt;&lt;p&gt;" + word.getContent() + "&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;");
+    }
+
+    @Override
+    public void visit(ExcelDocument excel) {
+        System.out.println("&lt;html&gt;&lt;body&gt;&lt;h1&gt;Excel 内容&lt;/h1&gt;&lt;table border='1'&gt;");
+        for (String[] row : excel.getTable()) {
+            System.out.print("&lt;tr&gt;");
+            for (String cell : row) {
+                System.out.print("&lt;td&gt;" + cell + "&lt;/td&gt;");
+            }
+            System.out.println("&lt;/tr&gt;");
+        }
+        System.out.println("&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;");
+    }
+}
+</code></pre>
+<p>这个访问者类实现了将文档转换为 HTML 的具体逻辑。每种文档的转换方式不同，但它们共用一个访问者接口，使得扩展变得灵活又统一。</p>
+<p>5）客户端调用示例</p>
+<pre><code class="language-java">public class Client {
+    public static void main(String[] args) {
+        Document pdf = new PDFDocument("这是 PDF 文件的内容");
+        Document word = new WordDocument("这是 Word 文档的内容");
+        Document excel = new ExcelDocument(new String[][] {
+            {"姓名", "成绩"},
+            {"鱼皮", "90"},
+            {"Yes哥", "95"}
+        });
+
+        DocumentVisitor htmlExporter = new HtmlExportVisitor();
+
+        pdf.accept(htmlExporter);
+        word.accept(htmlExporter);
+        excel.accept(htmlExporter);
+    }
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code class="language-plain">&lt;html&gt;&lt;body&gt;&lt;h1&gt;PDF 内容&lt;/h1&gt;&lt;p&gt;这是 PDF 文件的内容&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+&lt;html&gt;&lt;body&gt;&lt;h1&gt;Word 内容&lt;/h1&gt;&lt;p&gt;这是 Word 文档的内容&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+&lt;html&gt;&lt;body&gt;&lt;h1&gt;Excel 内容&lt;/h1&gt;&lt;table border='1'&gt;&lt;tr&gt;&lt;td&gt;姓名&lt;/td&gt;&lt;td&gt;成绩&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;鱼皮&lt;/td&gt;&lt;td&gt;90&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Yes哥&lt;/td&gt;&lt;td&gt;95&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;
+
+</code></pre>
+<p>客户端通过访问者 <code>HtmlExportVisitor</code> 完成了对多个文档类型的统一格式转换。访问者模式让新增新的转换方式（比如导出为 Markdown 或 HTML）变得非常容易，而无需修改原有文档类的任何代码。</p>
+<h2 id="访问者模式的优缺点"><a class="header" href="#访问者模式的优缺点">访问者模式的优缺点</a></h2>
+<h3 id="优点"><a class="header" href="#优点">优点</a></h3>
+<ul>
+<li><strong>扩展性强</strong>：访问者模式可以让我们在不改变元素类（被访问者类）的情况下，增加新的操作。这样一来，功能扩展变得非常简单，只需要在访问者中添加新功能即可，符合开闭原则。</li>
+<li><strong>集中操作</strong>：将操作集中在访问者类中，避免了在各个元素类中重复实现相同的操作，使得系统的修改和维护更加集中和清晰。</li>
+<li><strong>灵活性高</strong>：访问者模式让你可以针对不同类型的元素执行不同的操作，灵活性也非常高，特别适用于需要对对象结构中的不同元素做不同操作的情况。</li>
+</ul>
+<h3 id="缺点"><a class="header" href="#缺点">缺点</a></h3>
+<ul>
+<li><strong>增加了类的数量</strong>：访问者模式需要为每个不同的操作创建一个访问者类，这会导致系统中类的数量增加，进而使得系统变得复杂。</li>
+<li><strong>修改元素类困难</strong>：虽然增加新操作很方便，但一旦要修改元素类的结构，就会影响到所有的访问者，需要同步更新访问者中的相关代码，导致维护成本增加。</li>
+<li><strong>不适合频繁变化的对象结构</strong>：访问者模式适合结构比较稳定的场景，如果对象结构经常变化，添加新的元素时，就必须修改所有的访问者类，这样就违背了它的初衷，增加了维护难度。</li>
+</ul>
+<h2 id="扩展知识---源码分析"><a class="header" href="#扩展知识---源码分析">扩展知识 - 源码分析</a></h2>
+<h3 id="开源框架中的应用"><a class="header" href="#开源框架中的应用">开源框架中的应用</a></h3>
+<h4 id="1jdk"><a class="header" href="#1jdk">1、JDK</a></h4>
+<p>在 JDK 中，<strong>javax.lang.model.element.ElementVisitor</strong> 是访问者模式的标准实现，它的作用是在编译期间<strong>遍历Java程序中的各种元素</strong>（如类、方法、字段）并执行对应逻辑。</p>
+<p>这个接口是在 Java 注解处理器（APT）机制中用得最多的，很多框架比如 Lombok、Dagger 都会用它来分析代码结构。</p>
+<p>我们来看下关键源码：</p>
+<pre><code class="language-java">/**
+ * 元素访问器接口，用于访问 Java 程序中的各种元素（类、方法、字段、包等）。
+ * 
+ * 这是 Java 编译器 API（javax.lang.model）中的关键接口之一，
+ * 用于在注解处理器或源码分析工具中访问和处理抽象语法树（AST）元素。
+ */
+public interface ElementVisitor&lt;R, P&gt; {
+
+    /**
+     * 访问任意 Element 的通用方法。
+     */
+    R visit(Element e, P p);
+
+    /**
+     * 访问任意 Element 的简便方法，相当于 visit(e, null)。
+     */
+    R visit(Element e);
+
+    /**
+     * 访问包（PackageElement）元素。
+     */
+    R visitPackage(PackageElement e, P p);
+
+    /**
+     * 访问类、接口、枚举等类型元素（TypeElement）。
+     */
+    R visitType(TypeElement e, P p);
+
+    /**
+     * 访问字段、局部变量、参数等变量元素（VariableElement）。
+     */
+    R visitVariable(VariableElement e, P p);
+
+ /**
+     * 访问方法或构造函数等可执行元素（ExecutableElement）。
+     */
+    R visitExecutable(ExecutableElement e, P p);
+
+    /**
+     * 访问泛型类型参数元素（TypeParameterElement）。
+     */
+    R visitTypeParameter(TypeParameterElement e, P p);
+
+    /**
+     * 访问未知类型的元素（将来语言版本可能引入新元素）。
+     */
+    R visitUnknown(Element e, P p);
+
+</code></pre>
+<p>每种程序元素对应一个 <code>visitXxx</code> 方法，而 <code>Element</code> 接口中定义了 <code>accept()</code> 方法：</p>
+<pre><code class="language-java">/**
+ * 表示程序中出现的语言元素（如包、类、字段、方法、参数等）的通用接口。
+ */
+public interface Element {
+
+    /**
+     * 接收一个访问器访问当前元素，实现访问者模式（Visitor Pattern）。
+     */
+    &lt;R, P&gt; R accept(ElementVisitor&lt;R, P&gt; v, P p);
+}
+
+</code></pre>
+<p>调用者会传入一个访问者，<code>accept()</code> 会根据元素类型调用对应的 <code>visitXxx()</code> 方法。</p>
+<p>我们通过类图来看下简单的结构：</p>
+<p><img src="./img/111.png" alt=""></p>
+<p>类图中我们可以很清晰地看到：数据结构（Element）和操作逻辑（ElementVisitor）被彻底分离，扩展非常方便。</p>
+<h4 id="2spring-框架"><a class="header" href="#2spring-框架">2、Spring 框架</a></h4>
+<p>Spring 中有一个类叫 <strong>BeanDefinitionVisitor</strong>，它就是一个典型的访问者，用来遍历 Bean 的元数据结构，并对属性值做批量处理或修改。</p>
+<p>这个类一般出现在 Spring 内部配置处理的过程中，比如替换某些占位符、动态修改属性值等场景。</p>
+<p>我们来看下源码：</p>
+<pre><code class="language-java">public class BeanDefinitionVisitor {
+
+    /**
+     * 访问整个 BeanDefinition 的入口方法，
+     * 子类通常会在这里递归访问各个属性值。
+     */
+    public void visitBeanDefinition(BeanDefinition beanDefinition) {
+        visitParentName(beanDefinition);
+		visitBeanClassName(beanDefinition);
+		visitFactoryBeanName(beanDefinition);
+		visitFactoryMethodName(beanDefinition);
+		visitScope(beanDefinition);
+		if (beanDefinition.hasPropertyValues()) {
+			visitPropertyValues(beanDefinition.getPropertyValues());
+		}
+		if (beanDefinition.hasConstructorArgumentValues()) {
+			ConstructorArgumentValues cas = beanDefinition.getConstructorArgumentValues();
+			visitIndexedArgumentValues(cas.getIndexedArgumentValues());
+			visitGenericArgumentValues(cas.getGenericArgumentValues());
+		}
+    }
+
+    /**
+     * 访问 BeanDefinition 的 parentName 属性（父 Bean 名称）。
+     */
+    protected void visitParentName(BeanDefinition beanDefinition) {
+        // 省略实现代码...
+    }
+
+    /**
+     * 访问 BeanDefinition 的 beanClassName 属性（Bean 的类名）。
+     */
+    protected void visitBeanClassName(BeanDefinition beanDefinition) {
+        // 省略实现代码...
+    }
+
+    /**
+     * 访问 BeanDefinition 的 factoryBeanName 属性（工厂 Bean 名称）。
+     */
+    protected void visitFactoryBeanName(BeanDefinition beanDefinition) {
+        // 省略实现代码...
+    }
+
+    /**
+     * 访问 BeanDefinition 的 factoryMethodName 属性（工厂方法名）。
+     */
+    protected void visitFactoryMethodName(BeanDefinition beanDefinition) {
+        // 省略实现代码...
+    }
+
+    /**
+     * 访问 BeanDefinition 的 scope 属性（作用域，例如 singleton、prototype）。
+     */
+    protected void visitScope(BeanDefinition beanDefinition) {
+        // 省略实现代码...
+    }
+
+    /**
+     * 访问 BeanDefinition 中的属性值集合（&lt;property&gt; 标签对应的内容）。
+     */
+    protected void visitPropertyValues(MutablePropertyValues pvs) {
+        // 省略实现代码...
+    }
+
+    /**
+     * 访问构造函数中按索引注入的参数（constructor-arg index="0"）。
+     */
+    protected void visitIndexedArgumentValues(Map&lt;Integer, ConstructorArgumentValues.ValueHolder&gt; ias) {
+        // 省略实现代码...
+    }
+
+    /**
+     * 访问构造函数中按顺序注入的参数（无 index，按顺序匹配）。
+     */
+    protected void visitGenericArgumentValues(List&lt;ConstructorArgumentValues.ValueHolder&gt; gas) {
+        // 省略实现代码...
+    }
+
+    /**
+     * 处理各种类型的值，支持嵌套 BeanDefinition、引用、集合、字符串等，
+     * 是整个访问过程的核心调度方法。
+     */
+    @Nullable
+    protected Object resolveValue(@Nullable Object value) {
+         // 省略实现代码...
+    }
+
+    /**
+     * 访问数组类型的值，逐一解析其中的元素。
+     */
+    protected void visitArray(Object[] arrayVal) {
+        // 省略实现代码...
+    }
+
+    /**
+     * 访问 List 类型的值，逐一解析其中的元素。
+     */
+    protected void visitList(List listVal) {
+        // 省略实现代码...
+    }
+
+    /**
+     * 访问 Set 类型的值，逐一解析其中的元素。
+     */
+    protected void visitSet(Set setVal) {
+        // 省略实现代码...
+    }
+
+    /**
+     * 访问 Map 类型的值，递归解析 key 和 value。
+     */
+    protected void visitMap(Map&lt;?, ?&gt; mapVal) {
+        // 省略实现代码...
+    }
+}
+
+</code></pre>
+<p>这个访问者会“走遍”整个 Bean 的定义结构，处理每个属性值，完成类似占位符替换、动态注入等任务。它和 <code>BeanDefinition</code> 本身是解耦的，两者各司其职。</p>
+<h3 id="优势和作用"><a class="header" href="#优势和作用">优势和作用</a></h3>
+<p>通过上述的源码分析，我们可以再次总结下访问者模式的作用。</p>
+<h4 id="1结构稳定操作可扩展"><a class="header" href="#1结构稳定操作可扩展">1、结构稳定，操作可扩展</a></h4>
+<p>在 JDK 和 Spring 这类框架中，结构往往是比较稳定的，比如 <code>Element</code>、<code>BeanDefinition</code> 这些类的结构不轻易改动。而访问者模式允许我们在不修改这些类的前提下，自由地添加各种操作。新加一个行为只需要实现一个新的访问者，不需要动原有结构，非常利于扩展和维护。</p>
+<h4 id="2逻辑集中职责清晰"><a class="header" href="#2逻辑集中职责清晰">2、逻辑集中，职责清晰</a></h4>
+<p>访问者把不同的操作集中到一个类中，比如 <code>ElementVisitor</code> 或 <code>BeanDefinitionVisitor</code>，这样每种操作的代码都聚集在一块，逻辑更清晰，也方便后期维护和测试。而且不同访问者之间互不干扰，不容易引发耦合问题。</p>
+<h4 id="3支持多态调度"><a class="header" href="#3支持多态调度">3、支持多态调度</a></h4>
+<p>通过 <code>accept()</code> 方法的双重分发机制（也叫“双分派”），访问者模式能够根据访问者和被访问者的具体类型，自动调用对应的访问逻辑。这种机制对处理复杂层级结构（比如编译器的 AST、Spring 的配置树）特别有用。</p>
+<h2 id="相关面试题"><a class="header" href="#相关面试题">相关面试题</a></h2>
+<p>可以在 <a href="https://www.mianshiya.com/">程序员面试刷题神器 - 面试鸭</a> 上获取到企业常问的设计模式面试题。比如：</p>
+<p>1）<a href="https://www.mianshiya.com/bank/1801559627969929217/question/1803306004491264002">什么是访问者模式？一般用在什么场景？ </a></p>
+<p><img src="./img/112.png" alt=""></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../DesignPattern/22-解释器模式.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../DesignPattern/多种设计模式的组合应用.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../DesignPattern/22-解释器模式.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../DesignPattern/多种设计模式的组合应用.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

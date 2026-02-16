@@ -1,0 +1,559 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>设计模式实战教程 - The Zen of Programming</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-4fa65084.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-df451732.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Zen of Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h1 id="设计模式实战教程"><a class="header" href="#设计模式实战教程">设计模式实战教程</a></h1>
+<p>大家好，我是程序员鱼皮。设计模式是我们开发软件时针对常见问题的 <strong>通用</strong> 解决方案，也是前辈们在写代码时不断摸索总结出来的好方法。可以理解为打游戏的攻略，就是我们遇到同一类的对手时，怎么走位、怎么放技能之类的。</p>
+<p>设计模式最直接的作用就是 <strong>减少烂代码、让项目代码更好维护</strong>。举个栗子，如果没学过设计模式，可能随着产品不断加需求、改需求，你的代码会充满大量的 if else，新同事来了呢，也不敢动前人代码，只能再去补充 if else，于是屎山越堆越高。</p>
+<p>而使用设计模式后，你可以把每段逻辑单独封装和维护，大家协作开发也会更高效。</p>
+<p>即使到了 AI 时代，设计模式的含金量依然是极高的，如果你不懂设计模式，可能会出现 2 种情况：</p>
+<ol>
+<li>AI 生成的代码太规范，用了设计模式，你却看不懂</li>
+<li>AI 生成的代码太散乱，你不知道设计模式，所以也无法让 AI 帮你优化代码</li>
+</ol>
+<p>此外，很多知名项目都用到了大量的设计模式，比如 Spring、MyBatis 等。如果不学习它，可能你天天写代码都是 CRUD、读别人的源码会非常吃力。</p>
+<p><strong>因此，设计模式仍然是软件开发岗面试的重点，想进大厂的同学一定要学习它。</strong></p>
+<p>为了帮助大家更好地学习设计模式，我带团队肝了一套 <strong>完全免费且开源</strong> 的设计模式教程！有帮助的话也欢迎点个 star 支持啦~</p>
+<h2 id="前置知识"><a class="header" href="#前置知识"><strong>前置知识</strong></a></h2>
+<p>在正式进入设计模式之前，我们先花点时间把一些基础的面向对象概念捋一捋。虽然这些概念我们在学习 Java
+的时候或多或少都接触过，但在设计模式的实际应用里，它们可不只是课本里的术语，而是很多模式背后的根基。</p>
+<h3 id="接口"><a class="header" href="#接口">接口</a></h3>
+<p>接口是 Java 中非常核心的一个概念，它就像是“规范”或者“协议”，定义了一组方法的<strong>名称和参数格式</strong>
+，但并不去实现这些方法的具体逻辑。我们可以把接口理解成是一种“承诺”——谁实现了这个接口，谁就必须按照接口定义的方法去完成逻辑。</p>
+<p>在 Java 中，接口的作用主要有两个：</p>
+<ul>
+<li>
+<p><strong>规范约束</strong>：统一各个实现类的行为标准。</p>
+</li>
+<li>
+<p><strong>解耦合设计</strong>：程序可以依赖接口而不是具体实现，这对于后期扩展和维护是非常重要的。</p>
+</li>
+</ul>
+<p>从 Java 8 开始，接口还可以带有默认方法（<code>default</code>）和静态方法，甚至可以有私有方法，但它们仍不能有实例变量，也不能有构造方法，接口本质上还是以“行为定义”为主。</p>
+<h3 id="抽象类"><a class="header" href="#抽象类">抽象类</a></h3>
+<p>抽象类和接口有些相似，也是用来定义一个抽象的模板，让子类去继承并补全细节。但抽象类更像是“半成品”或者“骨架”，已经包含了一些默认的行为实现，还预留了部分抽象方法交给子类实现。</p>
+<p>抽象类有几个特点：</p>
+<ul>
+<li>
+<p>可以有普通成员变量和方法。</p>
+</li>
+<li>
+<p>可以有构造函数。</p>
+</li>
+<li>
+<p>可以包含抽象方法（用 <code>abstract</code> 关键字标识）。</p>
+</li>
+<li>
+<p>不能被直接实例化。</p>
+</li>
+</ul>
+<p>通常我们会在类之间存在<strong>父子关系</strong>，且想在父类中提供一些默认实现的时候，选用抽象类会更合适；而当我们只需要定义一套“规范”时，接口是更好的选择。</p>
+<h3 id="继承"><a class="header" href="#继承">继承</a></h3>
+<p>继承是面向对象编程中的一个基本特性，它允许我们创建一个类，并“复用”另一个类的代码。简单说，就是**子类自动拥有父类的属性和方法
+**，而不需要重新写一遍。</p>
+<p>继承有两个主要用途：</p>
+<ul>
+<li>
+<p><strong>代码复用</strong>：父类写好了通用逻辑，子类可以直接使用。</p>
+</li>
+<li>
+<p><strong>构建层次结构</strong>：通过继承构建出清晰的类型体系。</p>
+</li>
+</ul>
+<p>需要注意的是，Java 不支持多重继承（一个类不能继承多个类），是为了避免“菱形继承”这种带来歧义的场景。不过接口是可以多实现的，这在实际设计中提供了更灵活的扩展方式。</p>
+<h3 id="多态"><a class="header" href="#多态">多态</a></h3>
+<p>多态是面向对象设计中最关键的一环。所谓多态，指的是<strong>同一操作作用于不同对象时，可以表现出不同的行为</strong>。这是我们实现“扩展性”和“可替换性”的基础。</p>
+<p>多态有三种形式：</p>
+<ol>
+<li>
+<p><strong>方法重载（Overload）</strong>：同一个类中方法名相同，参数不同。</p>
+</li>
+<li>
+<p><strong>方法重写（Override）</strong>：子类重新定义父类的方法。</p>
+</li>
+<li>
+<p><strong>父类引用指向子类对象</strong>：这是实际使用多态的常见场景。</p>
+</li>
+</ol>
+<p>理解多态最关键的一点是：<strong>我们可以“面向父类编程”，而在运行时根据对象的实际类型调用具体实现</strong>。这为设计模式中的很多“可扩展”“可替换”行为打下了基础。</p>
+<hr>
+<p>梳理完了这些基础知识，目的是为了打牢理解设计模式的基本功。因为很多设计模式的核心思想，其实就是在这些语言特性之上构建出来的。如果对这些基础知识掌握得不牢，设计模式学起来就容易停留在表面，很难真正理解背后的设计意图。</p>
+<p>接下来，我们就可以正式进入设计模式的学习了。</p>
+<h2 id="设计模式介绍"><a class="header" href="#设计模式介绍">设计模式介绍</a></h2>
+<p>大家有没有思考过如下几个问题？</p>
+<ul>
+<li>
+<p>同样都是写代码，为什么有些同学的思路清晰、代码整洁；而我的代码却充满了重复和混乱，每次要修改时都无从下手、Bug 一堆？</p>
+</li>
+<li>
+<p>如何写代码，才能使得项目易于扩展和维护？</p>
+</li>
+<li>
+<p>我每天都在写重复的代码，如何提升水平？</p>
+</li>
+<li>
+<p>为什么我读不懂大佬写的源码？是不是缺少了什么知识？</p>
+</li>
+</ul>
+<p>如果存在上述问题，那么我们一定要学习软件开发中的重要技能 —— 设计模式。</p>
+<p>设计模式是软件开发人员在软件开发过程中面临的一般问题的 <strong>通用</strong> 解决方案。这些解决方案是众多软件开发人员经过相当长的一段时间的试验和错误总结出来的。</p>
+<p>通俗地说就是前辈们在写代码时摸索出了一些不错的方法，可以用于解决一类问题、更好地开发和维护项目。于是其他软件开发者纷纷效仿，久而久之，就得出了一套优秀的软件开发方法总结。</p>
+<p>目前最为经典的设计模式有 23
+种，学习之后，不仅能帮助我们开拓思路、写出更优质的代码、提高项目的开发和维护效率；还能够帮助我们更好地阅读和理解源码，甚至可以根据文件名称直接推断出源码的架构设计（有点行话的感觉）！因此，在准备阅读框架源码前，强烈建议先学习设计模式。</p>
+<p>此外，设计模式也是软件开发相关岗位面试的重点（尤其是大厂、后端开发岗位），建议大家有时间的话都要学习。</p>
+<h2 id="设计模式核心思想"><a class="header" href="#设计模式核心思想">设计模式核心思想</a></h2>
+<p>我们在学习设计模式时，不能只把它当成一些“用法模板”来背。设计模式真正的价值，其实是背后那一套“为什么要这么设计”的思路。它不是突然冒出来的，而是建立在一系列面向对象设计原则之上的。</p>
+<p>这些设计原则，很多我们在项目中可能没系统学过，但如果认真看过一些优秀的源码，或者踩过不少坑，就会慢慢体会到它们的价值。下面我们来简单梳理几个最基础、也是最重要的设计原则，它们几乎贯穿了所有设计模式。</p>
+<h3 id="单一职责原则"><a class="header" href="#单一职责原则">单一职责原则</a></h3>
+<blockquote>
+<p>一个类，只干一件事。</p>
+</blockquote>
+<p>一个类只负责一个功能模块上的事情。如果一个类同时负责业务逻辑、数据库访问、日志处理等多种职责，那么一旦某个职责发生变化，就有可能影响到整个类的稳定性。</p>
+<p>这个原则听上去简单，实际操作起来却常常被忽视。很多时候是图省事，结果一个类越写越大，维护起来就越来越难。</p>
+<p>设计模式里，比如装饰器模式、职责链模式，其实都是在帮我们把复杂职责拆分开，控制类的粒度。</p>
+<h3 id="开闭原则"><a class="header" href="#开闭原则">开闭原则</a></h3>
+<blockquote>
+<p>对扩展开放，对修改关闭。</p>
+</blockquote>
+<p>当我们新增功能时，应该通过“新增代码”的方式来实现，而不是去修改已有的类或方法。这样做的好处是，原来的功能不会被影响，风险小；新功能也能保持独立，维护方便。</p>
+<p>这个原则能帮助我们实现“加功能不动老代码”。比如策略模式、工厂模式、本质上都是在帮助我们在已有体系上“平滑加功能”。</p>
+<h3 id="里氏替换原则"><a class="header" href="#里氏替换原则">里氏替换原则</a></h3>
+<blockquote>
+<p>子类对象必须能够替换掉父类对象，并保持原有功能不变。</p>
+</blockquote>
+<p>通俗点说，继承关系不能乱用。继承不是为了代码复用，而是为了“保持通用的行为”。如果子类违背了父类的行为约定，那就会出现一些难以察觉的
+bug。</p>
+<p>这个原则是判断继承设计是否合理的一个标准。像模板方法模式、桥接模式这些，都很强调父子类之间的替换关系。</p>
+<h3 id="依赖倒置原则"><a class="header" href="#依赖倒置原则">依赖倒置原则</a></h3>
+<blockquote>
+<p>高层模块不应该依赖低层模块，两者都应该依赖抽象。</p>
+</blockquote>
+<p>我们应该“面向接口编程”，而不是直接依赖某个具体的类。</p>
+<p>比方说，一个支付系统，业务逻辑层不要直接依赖“微信支付”或“支付宝支付”的实现类，而应该依赖一个 <code>Payment</code>
+接口。这样我们就可以灵活地切换实现方式，而不会动到业务逻辑的代码。</p>
+<p>像工厂模式、策略模式、依赖注入的思想，基本都是围绕这个原则展开的。</p>
+<h3 id="接口隔离原则"><a class="header" href="#接口隔离原则">接口隔离原则</a></h3>
+<blockquote>
+<p>接口要小而精，不要大而全。</p>
+</blockquote>
+<p>接口一旦设计成“全能型”，实现起来就容易出现“我不需要这个方法但也要实现它”的情况。这样不仅多余，还容易让接口的维护变得困难。</p>
+<p>比如我们在系统中定义了 <code>UserService</code> 接口，如果这个接口又要注册用户、又要导出报表、还要批量删除，很多实现类就会出现强行实现的尴尬场面。</p>
+<p>像组合模式、适配器模式这些，往往就是在帮助我们更好地隔离接口、解耦功能。</p>
+<h3 id="迪米特法则"><a class="header" href="#迪米特法则">迪米特法则</a></h3>
+<blockquote>
+<p>只和直接相关的类交流，尽量减少对外部对象内部细节的依赖。</p>
+</blockquote>
+<p>也叫“最少知道原则”，就是说一个类应该尽量只关注自己的直接朋友，不要对别人家的细节过于熟悉。这样可以减少耦合，提高模块的独立性。</p>
+<p>典型的例子就是外观模式，它通过提供统一入口，让调用者不需要接触系统内部的各种细节类。</p>
+<p>这些设计原则看似是理论，其实非常实用。它们决定了我们写的代码是否易读、是否好维护、业务功能是否能快速扩展。</p>
+<p>而设计模式，就是这些原则的“落地方案”。也就是说，<strong>设计模式本质上是在帮我们实践这些设计原则，让系统更健壮、更灵活、更可扩展。</strong></p>
+<p>掌握了这些原则，理解设计模式就不是死记硬背，而是顺理成章的推导过程。我们后面讲的每一个设计模式，其实都可以回头映射到这些原则上。</p>
+<h2 id="设计模式的分类"><a class="header" href="#设计模式的分类">设计模式的分类</a></h2>
+<p>从设计模式的大类上来看，设计模式共分成三种类型：</p>
+<ol>
+<li>
+<p><a href="DesignPattern/创建型模式.html">创建型模式</a>（Creational Patterns）：主要关注“对象怎么创建”，比如单例、工厂、建造者。</p>
+</li>
+<li>
+<p><a href="DesignPattern/结构型模式.html">结构型模式</a>（（Structural Patterns）：主要处理“类与类、对象与对象之间如何组合”，比如适配器、桥接、装饰器。</p>
+</li>
+<li>
+<p><a href="DesignPattern/行为型模式.html">行为型模式</a>（Behavioral Patterns）：关注“对象之间如何协作和通信”，比如观察者、状态、策略</p>
+</li>
+</ol>
+<p>直接看下面的思维导图，分类很清晰：</p>
+<p><img src="img/0.webp" alt="0.webp"></p>
+<h2 id="学习建议"><a class="header" href="#学习建议">学习建议</a></h2>
+<ol>
+<li>
+<p>对设计模式的学习和其他知识一样，先了解每种设计模式是什么？作用是什么？能够解决什么问题？适用于什么场景？有什么特点？类和对象的关系是什么（建议结合
+UML 类图来理解）？再去考虑编码实现和进一步在项目中应用。</p>
+</li>
+<li>
+<p>一定要多写代码实践，最好每个设计模式都实现一遍，不要去背代码，用的多了自然就能写出代码了。</p>
+</li>
+<li>
+<p>每个设计模式都可以 <strong>独立学习</strong> ，互相之间联系不大，因此可以根据自己的时间来选择性学习（比如先学重点的单例模式）。</p>
+</li>
+<li>
+<p>在学会基础的设计模式后，可以分析之前学过的框架源码（比如 Spring、MyBatis 等），参考别人是如何应用设计模式的。</p>
+</li>
+<li>
+<p><strong>不要过度依赖设计模式！！！！！！</strong> 它并不是银弹，过分使用设计模式可能只会增加系统的复杂度。</p>
+</li>
+</ol>
+<h2 id="设计模式学习路线"><a class="header" href="#设计模式学习路线">设计模式学习路线</a></h2>
+<p>主流的设计模式共有 23 种，建议大家按照以下四个阶段来学习：</p>
+<ol>
+<li>
+<p>基础学习</p>
+</li>
+<li>
+<p>编码实现</p>
+</li>
+<li>
+<p>项目实战</p>
+</li>
+<li>
+<p>备战面试</p>
+</li>
+</ol>
+<p>其中第一个阶段和第二个阶段 <strong>可以同时进行</strong> ，即对于每个设计模式的学习都是：先了解、再编码实现。</p>
+<h3 id="一基础学习"><a class="header" href="#一基础学习">一、基础学习</a></h3>
+<p>依次了解每一种设计模式的应用场景、特点、UML 类图，能够对设计模式有个基础的印象。</p>
+<h4 id="学习顺序"><a class="header" href="#学习顺序">学习顺序</a></h4>
+<p>根据使用频率、难易度、面试考察率等综合排序，仅供参考，并不绝对！</p>
+<p>优先：</p>
+<ol>
+<li>
+<p><a href="DesignPattern/2-单例模式.html">单例模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/1-工厂方法模式.html">工厂方法模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/19-迭代器模式.html">迭代器模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/14-策略模式.html">策略模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/4-建造者模式.html">建造者模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/18-模板方法模式.html">模板方法模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/7-代理模式.html">代理模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/21-责任链模式.html">责任链模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/3-抽象工厂模式.html">抽象工厂模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/6-适配器模式.html">适配器模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/13-观察者模式.html">观察者模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/9-外观模式.html">外观模式</a></p>
+</li>
+</ol>
+<p>一般：</p>
+<ol>
+<li>
+<p><a href="DesignPattern/10-桥接模式.html">桥接模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/11-组合模式.html">组合模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/8-装饰模式.html">装饰器模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/20-状态模式.html">状态模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/23-访问者模式.html">访问者模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/16-中介者模式.html">中介者模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/15-命令模式.html">命令模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/17-备忘录模式.html">备忘录模式</a></p>
+</li>
+</ol>
+<p>低优先：</p>
+<ol>
+<li>
+<p><a href="DesignPattern/5-原型模式.html">原型模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/12-享元模式.html">享元模式</a></p>
+</li>
+<li>
+<p><a href="DesignPattern/22-解释器模式.html">解释器模式</a></p>
+</li>
+</ol>
+<h3 id="二编码实现"><a class="header" href="#二编码实现">二、编码实现</a></h3>
+<p>本阶段的目标：依次编码实现每个设计模式，用任何支持面向对象的编程语言都可以，最好能够独立（不借助任何资料）从 0 写出每个设计模式的代码。</p>
+<h3 id="三项目实战"><a class="header" href="#三项目实战">三、项目实战</a></h3>
+<p>本阶段的目标：通过做项目或阅读项目源码来进一步强化每个设计模式的实际应用。做到能根据某个场景主动选出合适的设计模式来优化代码、灵活运用，并且能够通过文件命名、项目目录结构等途径来快速判断出某个框架是否使用了设计模式。</p>
+<h3 id="四备战面试"><a class="header" href="#四备战面试">四、备战面试</a></h3>
+<p>面试时对设计模式的考察主要有 4 种形式：</p>
+<ol>
+<li>
+<p>直接问你某个设计模式的作用和大致的原理，考察你对设计模式的了解程度</p>
+</li>
+<li>
+<p>让你手写某个设计模式的代码，考察你对设计模式的熟悉程度和编码能力</p>
+</li>
+<li>
+<p>给你一个实际的业务场景，让你去设计系统，考察你对设计模式的理解应用能力和逻辑思维</p>
+</li>
+<li>
+<p>问你某个框架（轮子）的核心设计和源码细节，考察你对设计模式的理解应用能力</p>
+</li>
+</ol>
+<h4 id="经典面试题"><a class="header" href="#经典面试题">经典面试题</a></h4>
+<ol>
+<li>
+<p><a href="https://www.mianshiya.com/bank/1801559627969929217/question/1801818229490130946">什么是设计模式？请简述其作用。</a></p>
+</li>
+<li>
+<p><a href="https://www.mianshiya.com/bank/1801559627969929217/question/1801818359295451137">23 种设计模式分为哪三大类？</a></p>
+</li>
+<li>
+<p><a href="https://www.mianshiya.com/bank/1801559627969929217/question/1804014835632644098">谈谈你了解的最常见的几种设计模式，说说他们的应用场景</a> 。</p>
+</li>
+<li>
+<p><a href="https://www.mianshiya.com/bank/1801559627969929217/question/1801818689919852545">请解释什么是单例模式，并给出一个使用场景</a></p>
+</li>
+<li>
+<p><a href="https://www.mianshiya.com/bank/1801559627969929217/question/1801818998708707329">工厂模式和抽象工厂模式有什么区别？</a></p>
+</li>
+<li>
+<p><a href="https://www.mianshiya.com/bank/1801559627969929217/question/1802171196621791233">请描述简单工厂模式的工作原理。</a></p>
+</li>
+<li>
+<p><a href="https://www.mianshiya.com/bank/1801559627969929217/question/1802557281373855745">装饰器、适配器、代理、桥接这四种设计模式有什么区别？</a></p>
+</li>
+</ol>
+<p>更多面试题可以在面试鸭<a href="https://www.mianshiya.com/bank/1801559627969929217">《设计模式面试题题库》</a>中查看。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../前言.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../DesignPattern/创建型模式.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../前言.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../DesignPattern/创建型模式.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>9-外观模式 - The Zen of Programming</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-4fa65084.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-df451732.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Zen of Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h2 id="什么是外观模式"><a class="header" href="#什么是外观模式">什么是外观模式？</a></h2>
+<p><strong>外观模式</strong>（Facade pattern）是一种结构型设计模式，它的核心思想是：<strong>为复杂的子系统提供一个统一的对外接口</strong>，通过这个接口，我们就能更方便、更高效地访问这些子系统，而不需要关心它们内部的复杂逻辑。</p>
+<p>比如有一次鱼皮去银行办业务，准备办理一笔贷款，结果银行里面有一堆系统：一个管审核资料，一个管征信查询，一个管资金调度……鱼皮一脸懵。好在银行前台小姐姐一句话：“您这边只需要把身份证交给我，剩下的我来处理～”突然就感觉轻松了有没有。</p>
+<p><img src="./img/55.png" alt=""></p>
+<p>这就是外观模式的魅力。它<strong>帮我们屏蔽了内部系统的复杂性</strong>，只暴露一个“干净的、面向用户的接口”，让调用方用起来更省心。你不需要知道每个子系统是怎么工作的，只管跟“前台”打交道就好。</p>
+<p>在开发中，我们也常常会封装一层“外观类”，比如整合多个工具类、SDK、业务模块，对外统一暴露一个 <code>xxxFacade</code>，简化调用流程。这样不仅降低了耦合度，还提升了代码的可读性和维护性。</p>
+<h2 id="为什么要使用外观模式"><a class="header" href="#为什么要使用外观模式">为什么要使用外观模式？</a></h2>
+<p>开发中我们经常会遇到这样一种情况：系统内部有很多模块，比如数据库、缓存、第三方接口、日志系统等，而外部调用者（比如前端、接口调用者）根本没必要也不想知道这些模块是怎么运作的。我们如果直接暴露所有子系统接口，不仅使用麻烦，而且耦合度高，系统也不易维护。</p>
+<p>这时候，我们通过引入外观模式，定义一个对外统一的访问入口，由这个入口来协调和管理各个子系统的调用流程。这样，外部调用者只需要跟这个“入口类”打交道，调用起来更方便，系统的结构也更加清晰、解耦。</p>
+<p>为了让大家更好地感受到外观模式的作用，以用户注册为例，我们需要创建配置、数据库操作、发送欢迎邮件、日志记录等多个步骤。让我们来看看使用和不使用外观模式的区别：</p>
+<p><img src="./img/56.png" alt=""></p>
+<p>通过对比可以看出，不使用外观模式时，客户端需要直接与多个子系统（数据访问、邮件服务、日志服务）交互，这导致了代码耦合度高、调用复杂、难以维护等问题。每当需要修改注册流程时，都需要修改多处代码，增加了开发成本。</p>
+<p>而使用外观模式后，我们通过 <code>UserServiceFacade</code> 类将复杂的注册流程封装成一个简单的接口，实现了子系统与客户端的解耦。外观模式通过提供一个统一的接口来访问子系统，使得代码结构更加清晰，调用更加简单。这种实现方式不仅降低了代码耦合度，还使得修改注册流程变得更加容易，同时提高了代码的可维护性和可读性。</p>
+<h2 id="外观模式的应用场景"><a class="header" href="#外观模式的应用场景">外观模式的应用场景</a></h2>
+<p>举一些开发中典型的应用场景：</p>
+<ul>
+<li>多模块复杂系统整合：在一些大型的业务系统中，往往会有多个子模块（如订单、支付、物流等）。通过外观模式，可以为外部系统提供一个简单的接口，让外部系统通过外观类与各个模块进行交互，避免直接调用复杂的子系统接口，简化了系统的操作。例如，在电商系统中，创建一个“订单管理”外观类，将订单、支付、库存、配送等模块整合为一个简单接口，提供给前端调用。</li>
+<li>数据库操作封装：对于一些复杂的数据库操作，可能需要多个步骤才能完成（如数据查询、转换、保存等）。使用外观模式可以为数据库操作提供一个简单的外观类接口，隐藏复杂的查询细节和操作步骤，减少开发人员的认知负担。例如，设计一个数据访问外观类，它封装了常见的增删改查（CRUD）操作，让其他业务层无需关心数据库的具体实现。</li>
+<li>复杂的第三方服务集成：在项目中，如果需要集成多个第三方服务（如支付服务、短信服务、邮件服务等），使用外观模式可以统一对外提供一个简洁的接口，避免各个业务层与第三方服务的直接交互。例如，在一个电商系统中，可以创建一个“支付外观类”，统一处理支付宝、微信支付等支付方式的调用，使支付逻辑更加简单易用。</li>
+</ul>
+<h2 id="外观模式的基本结构"><a class="header" href="#外观模式的基本结构">外观模式的基本结构</a></h2>
+<p>外观模式具有的角色和职责：</p>
+<p>1）外观类（Facade）：对外提供统一接口，封装子系统的调用。</p>
+<p>2）子系统类（Subsystem）：负责自身的业务逻辑处理，通常不会对外暴露。</p>
+<p>3）客户端（Client）：通过外观类来使用子系统的功能。</p>
+<p>下面用一张类图帮大家更直观地理解外观模式的结构：</p>
+<p><img src="./img/57.png" alt=""></p>
+<h2 id="外观模式的实现"><a class="header" href="#外观模式的实现">外观模式的实现</a></h2>
+<p>下面就以 “数据库操作封装” 为例，我们用外观模式实现一个简化的用户数据访问系统。</p>
+<p>1）定义实体类：表示用户的数据结构</p>
+<pre><code class="language-java">public class User {
+    private int id;
+    private String name;
+
+    public User(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+</code></pre>
+<p>这一步是定义数据库中实体的数据模型（User 类），实际开发中会映射到数据库表，用于存储和传输用户数据。</p>
+<p>2）定义底层 DAO 接口和实现：封装原始数据库操作（模拟实现）</p>
+<pre><code class="language-java">public interface UserDAO {
+    void insert(User user);
+    User findById(int id);
+    void update(User user);
+    void delete(int id);
+}
+</code></pre>
+<pre><code class="language-java">import java.util.HashMap;
+import java.util.Map;
+
+public class UserDAOImpl implements UserDAO {
+    private Map&lt;Integer, User&gt; database = new HashMap&lt;&gt;();
+
+    public void insert(User user) {
+        database.put(user.getId(), user);
+        System.out.println("插入用户：" + user.getName());
+    }
+
+    public User findById(int id) {
+        System.out.println("根据 ID 查询用户：" + id);
+        return database.get(id);
+    }
+
+    public void update(User user) {
+        database.put(user.getId(), user);
+        System.out.println("更新用户：" + user.getName());
+    }
+
+    public void delete(int id) {
+        User removed = database.remove(id);
+        System.out.println("删除用户：" + (removed != null ? removed.getName() : "未知"));
+    }
+}
+</code></pre>
+<p>这一步实现了基本的数据库操作（CRUD），但接口比较底层，业务层如果直接调用，还是比较繁琐，不利于复用和维护。</p>
+<p>3）定义外观类：封装 CRUD 操作，简化调用方式</p>
+<pre><code class="language-java">public class UserServiceFacade {
+    private UserDAO userDAO;
+
+    public UserServiceFacade() {
+        this.userDAO = new UserDAOImpl(); // 实际开发中可注入
+    }
+
+    public void createUser(int id, String name) {
+        User user = new User(id, name);
+        userDAO.insert(user);
+    }
+
+    public void viewUser(int id) {
+        User user = userDAO.findById(id);
+        if (user != null) {
+            System.out.println("用户信息：ID=" + user.getId() + "，姓名=" + user.getName());
+        } else {
+            System.out.println("未找到对应的用户");
+        }
+    }
+
+    public void renameUser(int id, String newName) {
+        User user = userDAO.findById(id);
+        if (user != null) {
+            User updatedUser = new User(id, newName);
+            userDAO.update(updatedUser);
+        } else {
+            System.out.println("无法重命名，用户不存在");
+        }
+    }
+
+    public void removeUser(int id) {
+        userDAO.delete(id);
+    }
+}
+</code></pre>
+<p>这一步封装了对 <code>UserDAO</code> 的所有操作，把复杂的数据库调用包装成对业务开发更友好的接口，降低调用门槛。</p>
+<p>4）客户端调用示例：通过外观类完成数据库操作</p>
+<pre><code class="language-java">public class Client {
+    public static void main(String[] args) {
+        UserServiceFacade userService = new UserServiceFacade();
+
+        userService.createUser(1, "鱼皮");
+        userService.viewUser(1);
+        userService.renameUser(1, "Yes");
+        userService.viewUser(1);
+        userService.removeUser(1);
+        userService.viewUser(1);
+    }
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code class="language-plain">插入用户：鱼皮
+根据 ID 查询用户：1
+用户信息：ID=1，姓名=鱼皮
+根据 ID 查询用户：1
+更新用户：Yes
+根据 ID 查询用户：1
+用户信息：ID=1，姓名=Yes
+删除用户：Yes
+根据 ID 查询用户：1
+未找到对应的用户
+</code></pre>
+<p>通过 <code>UserServiceFacade</code>，我们把增删改查封装成简单的函数调用，业务层不需要再和底层 DAO 打交道，开发效率和代码可维护性都大大提升了。</p>
+<h2 id="外观模式的优缺点"><a class="header" href="#外观模式的优缺点">外观模式的优缺点</a></h2>
+<h3 id="优点"><a class="header" href="#优点">优点</a></h3>
+<ul>
+<li><strong>简化调用逻辑</strong>：外观模式最大的作用就是把系统的复杂度“挡在门外”。对于使用方来说，只需要跟一个外观类打交道，不用去理会底层有多少子系统、具体是怎么实现的，调用起来简单又清爽。</li>
+<li><strong>降低耦合度</strong>：外观类起到了一个中间人的作用，让调用者和内部子系统之间的联系变得松散。换句话说，你要是将来改了底层实现，只要外观接口不动，上层代码基本不用动，维护成本低。</li>
+<li><strong>有利于分层架构设计</strong>：在一些分层结构的系统里，比如三层架构，外观类可以作为“门卫”，帮你管理每一层之间的依赖关系，让层与层之间解耦得更干净，结构也更清晰。</li>
+</ul>
+<h3 id="缺点"><a class="header" href="#缺点">缺点</a></h3>
+<ul>
+<li><strong>功能扩展时不够灵活</strong>：一旦客户端习惯了只跟外观类打交道，那要想用到子系统里一些比较细的功能，就得回头改外观类，或者绕过它。这时候，外观反而成了一种限制。</li>
+<li><strong>可能会变成“万能类”</strong>：如果设计得不太合理，外观类很容易膨胀，什么事都往它身上堆，最后变成一个大杂烩，职责太多，反而不利于维护。</li>
+<li><strong>隐藏了部分系统细节</strong>：虽然这本身是优点，但有时候也是把“双刃剑”。尤其是在调试或者排查问题时，如果所有东西都被外观包装了起来，开发者可能会对系统内部的真实结构缺乏了解，排错效率也可能受影响。</li>
+</ul>
+<h2 id="扩展知识---源码分析"><a class="header" href="#扩展知识---源码分析">扩展知识 - 源码分析</a></h2>
+<h3 id="开源框架中的应用"><a class="header" href="#开源框架中的应用">开源框架中的应用</a></h3>
+<h4 id="1slf4j"><a class="header" href="#1slf4j">1、SLF4J</a></h4>
+<p>我们在使用日志的时候，大多数项目都会引入 SLF4J，而不是直接使用 Log4j2 或 Logback 的 API。这背后的设计思路，其实就是外观模式。</p>
+<p>开发者在代码中只和 SLF4J 提供的接口（比如 <code>Logger</code>）打交道，不需要关注它到底底层用的是哪个日志实现。这样一来，日志实现就能随时替换，不会影响业务逻辑。</p>
+<p>我们先来看一段日志记录的用法：</p>
+<pre><code class="language-java">import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class UserService {
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
+    public void createUser(String name) {
+        logger.info("开始创建用户：{}", name);
+        // ...
+    }
+}
+
+</code></pre>
+<p>这一段代码只依赖 SLF4J 的接口。底层到底是用的 Logback 还是 Log4j2，其实是在运行时动态绑定的，开发者不需要去关心。这就是典型的外观模式做的事：统一接口、隐藏实现细节。</p>
+<p>我们来看下日志结构的类图：</p>
+<p><img src="./img/58.png" alt=""></p>
+<p>通过这个类图，我们可以看到：</p>
+<ul>
+<li>Logger 接口是对外暴露的统一入口；</li>
+<li>LoggerFactory 是负责选择和初始化实际日志实现的门面；</li>
+<li>LogbackLogger、Log4jLogger 等 是真正的日志输出者；</li>
+<li>程序员只需要关注 Logger，不用管底层到底是谁在写日志。</li>
+</ul>
+<h4 id="2spring-框架"><a class="header" href="#2spring-框架">2、Spring 框架</a></h4>
+<p>在 Spring 里，<code>DispatcherServlet</code> 是个很典型的外观角色。我们用 Spring MVC 开发 Web 应用时，所有的请求都会先经过它处理，然后它会负责把请求分发到对应的 Controller、处理结果、渲染视图，甚至异常处理，最后把响应返回。</p>
+<p>也就是说，<code>DispatcherServlet</code> 把原本需要我们自己来写的一大堆控制逻辑，都整合封装到一个入口中。我们只需要定义 Controller 方法，剩下的工作 Spring MVC 替我们做好了。</p>
+<p>我们来看一下 <code>DispatcherServlet</code> 的核心处理逻辑：</p>
+<pre><code class="language-java">protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
+   HttpServletRequest processedRequest = request;
+    // 1. 获取处理器（Controller）
+    HandlerExecutionChain mappedHandler = getHandler(request);
+
+    // 2. 找到适配器（HandlerAdapter）来调用 Controller
+    HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
+
+    // 3. 真正执行 Controller 方法
+    ModelAndView mv = ha.handle(request, response, mappedHandler.getHandler());
+
+    // 4. 处理结果，包括渲染视图等
+    processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);
+
+}
+
+</code></pre>
+<p>从上面的步骤可以看出，<code>DispatcherServlet</code> 把 Controller 调用、参数绑定、异常处理、视图解析这些事情都统一封装进来了，这就是典型的外观模式结构。我们来看下基本的结构的类图：</p>
+<p><img src="./img/59.png" alt=""></p>
+<p>我们只看到一个 <code>DispatcherServlet</code>，背后其实牵涉到非常多的模块。Spring 帮我们把整个流程对外统一包装，开发者只关注业务逻辑，这正是外观模式最典型的应用场景。</p>
+<h3 id="优势和作用"><a class="header" href="#优势和作用">优势和作用</a></h3>
+<p>通过上述的源码分析，我们可以再次总结下外观模式的作用。</p>
+<h4 id="1降低系统复杂度"><a class="header" href="#1降低系统复杂度">1、降低系统复杂度</a></h4>
+<p>无论是 SLF4J 的日志模块，还是 Spring 的 MVC 模块，外观模式都通过一个“门面类”对外提供统一接口，把内部一堆子系统隐藏起来，让我们开发的时候不用关注太多细节。我们写业务的时候，就能更专注在核心逻辑上。</p>
+<h4 id="2增强扩展性和可维护性"><a class="header" href="#2增强扩展性和可维护性">2、增强扩展性和可维护性</a></h4>
+<p>因为内部逻辑都封装在外观类之后，如果未来底层实现改动，比如日志从输出到文件变成输出到远程服务器，我们也不需要改业务代码，只需要改配置就行了。类似地，Spring MVC 的内部流程如果变动，只要 <code>DispatcherServlet</code> 保持接口不变，对外也不会产生影响。</p>
+<h2 id="相关项目"><a class="header" href="#相关项目">相关项目</a></h2>
+<h4 id="编程导航的智能云图库项目"><a class="header" href="#编程导航的智能云图库项目">编程导航的智能云图库项目</a></h4>
+<p>在 <a href="https://www.codefather.cn/course/1864210260732116994">编程导航的智能云图库项目</a> 中，以图搜图功能采用了外观模式。多个独立的类分别负责执行具体任务，如获取搜图页面、解析 HTML 脚本、调用 API 获取结果等。通过引入 <code>ImageSearchApiFacade</code> 门面类，将这些分散的调用流程统一封装为一个 <code>searchImage</code> 方法。外部调用时只需传入图片地址，即可获得相似图片列表，简化了使用方式，屏蔽了内部的实现细节和调用顺序。</p>
+<p><img src="./img/60.png" alt=""></p>
+<h4 id="编程导航的聚合搜索项目"><a class="header" href="#编程导航的聚合搜索项目">编程导航的聚合搜索项目</a></h4>
+<p>在 <a href="https://www.codefather.cn/course/1790979621621641217">编程导航的聚合搜索项目</a> 的搜索聚合模块中，使用了门面模式对多个数据源的搜索结果进行了统一封装。该模式的主要目的是为调用方提供一个简化且一致的接口，屏蔽底层子系统的复杂调用逻辑，从而降低前端调用的理解和使用成本。</p>
+<p>具体做法是：定义了一个门面类，作为前端与各类搜索服务之间的中介，内部持有多个数据源搜索服务的引用。根据前端传入的参数，门面类会选择性地调用对应的数据源服务，并对返回结果进行统一处理和聚合。前端只需通过该门面类提供的统一接口进行调用，无需关注各个数据源的具体实现细节，从而降低了系统的耦合度，提高了扩展性和可维护性。</p>
+<p><img src="./img/61.png" alt=""></p>
+<h2 id="相关面试题"><a class="header" href="#相关面试题">相关面试题</a></h2>
+<p>可以在 <a href="https://www.mianshiya.com/">程序员面试刷题神器 - 面试鸭</a> 上获取到企业常问的设计模式面试题。比如：</p>
+<p>1）<a href="https://www.mianshiya.com/bank/1801559627969929217/question/1802557443223658498">什么是外观模式？一般用在什么场景？ </a></p>
+<p><img src="./img/62.png" alt=""></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../DesignPattern/8-装饰模式.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../DesignPattern/10-桥接模式.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../DesignPattern/8-装饰模式.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../DesignPattern/10-桥接模式.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

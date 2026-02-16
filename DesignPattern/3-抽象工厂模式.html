@@ -1,0 +1,485 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>3-抽象工厂模式 - The Zen of Programming</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-4fa65084.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-df451732.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Zen of Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h2 id="什么是抽象工厂模式"><a class="header" href="#什么是抽象工厂模式">什么是抽象工厂模式？</a></h2>
+<p><strong>抽象工厂模式</strong>（Abstract Factory Pattern）是一种创建型设计模式，说白了，它就是提供一个“超级工厂”的接口，专门用来创建一整组互相关联的产品对象，而且不用我们关心这些产品具体是怎么实现的。</p>
+<p>我们平常在购买手机时，店家提供了多种型号的手机，每种型号的手机提供了不同的配件和服务套餐。这些产品（手机、配件、套餐）可以是不同厂商的不同系列，但是它们在功能和设计上是相互协调的。例如，一个厂商可能提供“手机+耳机+手表”组合，另一个厂商提供“手机+无线充电器+定制化服务”组合。这就是一种“工厂”，它不仅生产手机，还生产与之匹配的其他产品。抽象工厂模式就是帮助我们创建这种相互依赖的产品组合。</p>
+<p><img src="./img/80.png" alt=""></p>
+<p>换句话说，它让我们通过一个接口，就能搞定多个相关对象的创建，而且这些对象之间还能保持一致性。更妙的是，我们完全不用关心具体的类名或构造逻辑，这些都交给具体的工厂实现去处理。</p>
+<h2 id="为什么要使用抽象工厂模式"><a class="header" href="#为什么要使用抽象工厂模式">为什么要使用抽象工厂模式？</a></h2>
+<p>抽象工厂模式的主要目的是为了解决对象创建的复杂性和耦合性问题。当我们有多个系列的产品，每个系列包含多个相互关联的对象时，如果直接在客户端代码中创建这些对象，会导致代码变得难以维护和扩展。抽象工厂模式通过将对象的创建过程抽象化，让客户端无需关心具体的产品实现，只需要通过工厂接口来获取相应的产品对象。这样，客户端代码和产品的具体实现解耦，便于产品的扩展和修改，同时也方便在不改变客户端代码的前提下，轻松切换不同系列的产品，从而提高了系统的灵活性和可维护性。</p>
+<p>为了让大家更好地感受到抽象工厂模式的作用，以跨平台UI组件库为例，我们需要支持不同操作系统（Windows、Mac）下的按钮、文本框等UI组件。让我们来看看使用和不使用抽象工厂模式的区别：</p>
+<p><img src="./img/81.png" alt=""></p>
+<p>通过对比可以看出，不使用抽象工厂模式时，我们需要在 <code>UIComponent</code> 类中通过条件判断来创建不同平台的UI组件，这导致了代码耦合度高、违反开闭原则、难以扩展等问题。每当需要添加新的平台或组件类型时，都需要修改现有代码，增加了维护成本。</p>
+<p>而使用抽象工厂模式后，我们将产品族的创建与使用分离，降低了代码耦合度。通过抽象工厂接口和具体工厂类，我们可以轻松添加新的平台支持，无需修改现有代码。同时，这种实现方式确保了同一平台下的组件风格一致性，提高了代码的可维护性和可扩展性。</p>
+<h2 id="抽象工厂模式的应用场景"><a class="header" href="#抽象工厂模式的应用场景">抽象工厂模式的应用场景</a></h2>
+<p>举一些开发中典型的应用场景：</p>
+<ul>
+<li>多平台 UI 渲染引擎：在开发一个支持 Web、Android、小程序等多端渲染的内容管理系统时，可以用抽象工厂为不同平台提供一整套组件（按钮、表单、图片组件等），工厂屏蔽平台差异，保持调用方式一致。</li>
+<li>多数据库适配场景（逻辑与物理结构差异大）：当一个系统需要支持 MySQL、Oracle、SQL Server 等数据库，且它们不仅语法不同，连分页、存储过程、数据结构等都不统一时，可用抽象工厂提供一整套数据访问组件（分页查询器、SQL 拼接器、字段映射器等）。</li>
+<li>多种导出格式支持系统：比如报表系统或试卷系统中，一套业务数据可能要导出为 PDF、Word、Excel、HTML 等格式，每种格式对应一组导出组件（布局器、样式渲染器、文件写入器），通过抽象工厂生成完整的导出工具链。</li>
+<li>多语言/多地区内容适配：跨境系统中，不同地区展示的内容、日期格式、币种符号等都不相同，可以通过抽象工厂为每个地区创建一整套“本地化服务组件”，如文本翻译器、格式转换器、金额展示器等。</li>
+</ul>
+<h2 id="抽象工厂模式的基本结构"><a class="header" href="#抽象工厂模式的基本结构">抽象工厂模式的基本结构</a></h2>
+<p>抽象工厂模式具有的角色和职责：</p>
+<p>1）抽象工厂（AbstractFactory）：声明一组创建产品的方法。<br>2）具体工厂（ConcreteFactory）：实现创建具体产品对象的方法。<br>3）抽象产品（AbstractProduct）：定义每个产品的公共接口。<br>4）具体产品（ConcreteProduct）：实现具体的产品对象。<br>5）客户端（Client）：只依赖抽象工厂和抽象产品，负责调用工厂去生产对象。</p>
+<p>下面用一张类图帮大家更直观地理解抽象工厂模式的结构：</p>
+<p><img src="./img/82.png" alt=""></p>
+<h2 id="抽象工厂模式代码实现"><a class="header" href="#抽象工厂模式代码实现">抽象工厂模式代码实现</a></h2>
+<p>下面就以 “多平台 UI 渲染” 为例，我们用抽象工厂模式实现一个简单的组件系统。</p>
+<p>1）定义抽象产品接口：声明各类 UI 组件的标准接口</p>
+<pre><code class="language-java">public interface Button {
+    void render();
+}
+
+public interface TextBox {
+    void render();
+}
+
+public interface Image {
+    void render();
+}
+</code></pre>
+<p>这一步的目的是统一各个产品的对外接口，比如所有平台的按钮都有 <code>render()</code> 方法，这样我们就能做到“面向接口编程”，平台实现细节被隐藏起来。</p>
+<p>2）定义抽象工厂接口，统一创建产品族的工厂接口</p>
+<pre><code class="language-java">public interface UIFactory {
+    Button createButton();
+    TextBox createTextBox();
+    Image createImage();
+}
+</code></pre>
+<p>抽象工厂接口定义了一整套产品的创建方式，比如一个平台的 UI 应该同时有按钮、文本框、图片，全部由一个工厂统一生产，保证风格一致。</p>
+<p>3）实现具体产品类（以 Web 为例）</p>
+<pre><code class="language-java">public class WebButton implements Button {
+    @Override
+    public void render() {
+        System.out.println("渲染 Web 风格按钮");
+    }
+}
+
+public class WebTextBox implements TextBox {
+    @Override
+    public void render() {
+        System.out.println("渲染 Web 风格文本框");
+    }
+}
+
+public class WebImage implements Image {
+    @Override
+    public void render() {
+        System.out.println("渲染 Web 风格图片组件");
+    }
+}
+</code></pre>
+<p>每个产品都有对应平台的实现类，比如 Web 平台的 <code>WebButton</code>、<code>WebTextBox</code> 等，分别去实现各自的接口。</p>
+<p>4）实现具体工厂类（Web 平台工厂）</p>
+<pre><code class="language-java">public class WebUIFactory implements UIFactory {
+    @Override
+    public Button createButton() {
+        return new WebButton();
+    }
+
+    @Override
+    public TextBox createTextBox() {
+        return new WebTextBox();
+    }
+
+    @Override
+    public Image createImage() {
+        return new WebImage();
+    }
+}
+</code></pre>
+<p>Web 平台的 UI 工厂会创建出 Web 风格的一整套组件。使用者只要拿这个工厂，就能生产出风格统一的 UI 组件。</p>
+<p>5）Android 平台产品和工厂实现</p>
+<pre><code class="language-java">public class AndroidButton implements Button {
+    @Override
+    public void render() {
+        System.out.println("渲染 Android 原生按钮");
+    }
+}
+
+public class AndroidTextBox implements TextBox {
+    @Override
+    public void render() {
+        System.out.println("渲染 Android 原生文本框");
+    }
+}
+
+public class AndroidImage implements Image {
+    @Override
+    public void render() {
+        System.out.println("渲染 Android 原生图片组件");
+    }
+}
+
+public class AndroidUIFactory implements UIFactory {
+    @Override
+    public Button createButton() {
+        return new AndroidButton();
+    }
+
+    @Override
+    public TextBox createTextBox() {
+        return new AndroidTextBox();
+    }
+
+    @Override
+    public Image createImage() {
+        return new AndroidImage();
+    }
+}
+</code></pre>
+<p>我们在这里复用了同一套接口，把 Android 平台的产品实现了出来，然后交给 Android 平台的工厂统一创建。</p>
+<p>6）客户端调用示例</p>
+<pre><code class="language-java">public class Client {
+    public static void main(String[] args) {
+        // 假设当前运行环境为 Web
+        UIFactory factory = new WebUIFactory();
+
+        Button button = factory.createButton();
+        TextBox textBox = factory.createTextBox();
+        Image image = factory.createImage();
+
+        button.render();
+        textBox.render();
+        image.render();
+    }
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code class="language-plain">渲染 Web 风格按钮
+渲染 Web 风格文本框
+渲染 Web 风格图片组件
+</code></pre>
+<p>客户端只需要和 <code>UIFactory</code> 打交道，不关心具体创建的是 Web 组件还是 Android 组件，完全通过接口访问。这就是抽象工厂的优势——屏蔽创建细节，统一调用方式。</p>
+<h2 id="简单工厂工厂方法抽象工厂的区别"><a class="header" href="#简单工厂工厂方法抽象工厂的区别">简单工厂、工厂方法、抽象工厂的区别</a></h2>
+<p><strong>1）简单工厂</strong>：通常由一个工厂类负责创建所有产品的实例，缺点是当产品种类增加时，工厂类会变得庞大，且难以扩展。</p>
+<p><strong>2）工厂方法</strong>：每个具体工厂类负责创建某一类产品，通过继承和多态机制解决了简单工厂类的问题，使得每个工厂只负责一种产品的创建。</p>
+<p><strong>3）抽象工厂</strong>：进一步扩展了工厂方法模式，不仅提供了创建单一产品的工厂方法，还提供了创建一系列相关产品的工厂方法，确保了不同产品之间的协调性。</p>
+<h2 id="抽象工厂模式的优缺点"><a class="header" href="#抽象工厂模式的优缺点">抽象工厂模式的优缺点</a></h2>
+<h3 id="优点"><a class="header" href="#优点">优点</a></h3>
+<ul>
+<li><strong>产品族的一致性</strong>：抽象工厂模式可以保证同一个产品族中的组件搭配使用时不会出错，比如 UI 组件的样式风格统一，使用体验更协调，避免了“东拼西凑”的情况。</li>
+<li><strong>便于切换产品系列</strong>：如果系统支持多种产品系列，比如要支持不同品牌或不同平台的实现，只需要替换一个工厂类，就能完成整套产品的切换，代码改动量小，扩展性好。</li>
+<li><strong>封装了对象的创建逻辑</strong>：对象的创建过程都被工厂封装起来了，客户端不用关心具体怎么创建，只要调用对应的工厂方法就行，降低了使用门槛，也让代码更整洁。</li>
+</ul>
+<h3 id="缺点"><a class="header" href="#缺点">缺点</a></h3>
+<ul>
+<li><strong>扩展产品族比较困难</strong>：一旦产品族的结构确定下来，比如工厂里要创建哪些产品是固定的，后期要再加一个新产品（比如再加一个新控件），就得改所有的工厂实现类，违反了开闭原则。</li>
+<li><strong>类的数量会变多</strong>：每个产品系列都要对应一个具体工厂类，加上每个产品本身也要有接口和实现，项目结构会变得比较庞大，对于简单项目来说可能有些“杀鸡用牛刀”。</li>
+<li><strong>增加了系统的抽象层级</strong>：虽然提高了灵活性，但也让代码结构变得更抽象，理解成本提升，对于新手或者不熟悉该模式的人来说，可能会觉得不太直观。</li>
+</ul>
+<h2 id="扩展知识---源码分析"><a class="header" href="#扩展知识---源码分析">扩展知识 - 源码分析</a></h2>
+<h3 id="开源框架中的应用"><a class="header" href="#开源框架中的应用">开源框架中的应用</a></h3>
+<h4 id="1jdk"><a class="header" href="#1jdk">1、JDK</a></h4>
+<p>在 JDK 中，有一个很典型的抽象工厂实现 —— <code>DocumentBuilderFactory</code>。</p>
+<p>我们平时解析 XML 文件时，可能会这么写：</p>
+<pre><code class="language-java">DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+DocumentBuilder builder = factory.newDocumentBuilder();
+Document document = builder.parse(new File("test.xml"));
+
+</code></pre>
+<p>这段代码的背后，其实就隐藏着抽象工厂的逻辑。</p>
+<p>我们来分析一下：</p>
+<ul>
+<li><code>DocumentBuilderFactory</code> 是一个抽象类，定义了创建产品的方法，比如 <code>newDocumentBuilder()</code>。</li>
+<li>不同的厂商可以实现自己的工厂类，比如内部可能是 <code>com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl</code>。</li>
+<li>每个具体工厂都能生产一组“配套”的产品：<code>DocumentBuilder</code> 就是其中之一，背后还可能关联解析器、验证器等。</li>
+</ul>
+<p>源码里我们可以看到这个关键方法：</p>
+<pre><code class="language-java">public abstract class DocumentBuilderFactory {
+    // 静态工厂方法，用于获取 DocumentBuilderFactory 的具体实现类实例。
+    public static DocumentBuilderFactory newInstance() {
+        return FactoryFinder.find(
+            /* The default property name according to the JAXP spec */
+            DocumentBuilderFactory.class, // "javax.xml.parsers.DocumentBuilderFactory"
+            /* The fallback implementation class name */
+            "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl");
+    }
+
+
+    // 抽象工厂方法，用于创建新的 DocumentBuilder 实例。
+    public abstract DocumentBuilder newDocumentBuilder()
+    throws ParserConfigurationException;
+}
+
+</code></pre>
+<p>这里的 <code>FactoryFinder</code> 会根据系统属性、配置文件、SPI 等机制返回不同实现的工厂类，实现了运行时灵活扩展的能力。</p>
+<h4 id="2spring-框架"><a class="header" href="#2spring-框架">2、Spring 框架</a></h4>
+<p>Spring 对抽象工厂模式的使用非常广泛，最核心的地方就是我们平时使用的 <code>ApplicationContext</code>。尤其是 <code>AbstractApplicationContext</code> 和它内部对 <code>BeanFactory</code> 的创建逻辑，本质上就是在用抽象工厂模式。</p>
+<p>我们来看下 Spring 启动时创建 Bean 工厂的过程。以 <code>AbstractApplicationContext</code> 为例，它内部定义了这样一个抽象方法：</p>
+<pre><code class="language-java">// 刷新当前 ApplicationContext 使用的 BeanFactory 实例。
+protected abstract void refreshBeanFactory() throws BeansException, IllegalStateException;
+</code></pre>
+<p>这个方法由子类去具体实现，比如 <code>GenericApplicationContext</code> 或 <code>AbstractRefreshableApplicationContext</code>。</p>
+<p>这个方法最终的职责是：构建出一个 BeanFactory 实例（比如 <code>DefaultListableBeanFactory</code>），并在其中加载 Bean 定义。</p>
+<p>我们来看下<code>AbstractRefreshableApplicationContext</code>里的实现：</p>
+<pre><code class="language-java">@Override
+protected final void refreshBeanFactory() throws BeansException {
+// 如果已有 BeanFactory，销毁其中所有 Bean 并关闭
+if (hasBeanFactory()) {
+    destroyBeans();
+    closeBeanFactory();
+}
+// 创建新的 BeanFactory（默认 DefaultListableBeanFactory）
+DefaultListableBeanFactory beanFactory = createBeanFactory();
+this.beanFactory = beanFactory;
+// 允许子类定制 BeanFactory 设置（如是否允许覆盖、循环依赖等）
+customizeBeanFactory(beanFactory);
+// 加载 Bean 定义（如从 XML、注解、配置类中）
+loadBeanDefinitions(beanFactory);
+}
+// 创建BeanFactory
+protected DefaultListableBeanFactory createBeanFactory() {
+    return new DefaultListableBeanFactory(getInternalParentBeanFactory());
+}
+// 加载 Bean 定义到指定的 BeanFactory 中
+protected abstract void loadBeanDefinitions(DefaultListableBeanFactory beanFactory)
+throws BeansException, IOException;
+</code></pre>
+<p>这个方法里通过 <code>createBeanFactory()</code> 创建了一个 <code>DefaultListableBeanFactory</code>，然后加载了 XML 或注解配置的 Bean 定义。这就体现了抽象工厂的特点：根据环境或配置，创建出一组相互关联的对象（即多个 Bean 实例），这些对象由统一的工厂进行管理。</p>
+<h3 id="优势和作用"><a class="header" href="#优势和作用">优势和作用</a></h3>
+<p>通过上述的源码分析，我们可以再次总结下抽象工厂设计模式的作用。</p>
+<h4 id="1统一产品创建逻辑"><a class="header" href="#1统一产品创建逻辑">1、<strong>统一产品创建逻辑</strong></a></h4>
+<p>在实际开发中，我们经常会遇到“创建一整组相关对象”的场景。像 <code>DocumentBuilderFactory</code> 就是个很典型的例子，它不直接暴露底层的构造逻辑，而是统一提供 <code>DocumentBuilder</code> 实例的创建方式，确保不同平台、不同实现下生成的解析器行为一致。类似地，Spring 的 <code>ApplicationContext</code> 本质上也是个抽象工厂，负责统一创建 Bean 实例，保证配置文件、注解、Java 配置这些方式最终创建出的 Bean 都是风格一致、结构统一的。</p>
+<h4 id="2提升扩展性"><a class="header" href="#2提升扩展性">2、提升扩展性</a></h4>
+<p>抽象工厂最大的优势之一是“新增产品族”时非常方便。以 Spring 为例，<code>ApplicationContext</code> 可以根据不同需求，切换为 <code>ClassPathXmlApplicationContext</code>、<code>AnnotationConfigApplicationContext</code> 等不同实现类，但外部调用者只依赖于统一的接口，不需要关心背后怎么创建 Bean。类似地，在 JDK 中我们也可以通过替换 <code>DocumentBuilderFactory</code> 实现，支持不同的 XML 解析器，扩展能力很强。</p>
+<h4 id="3解耦具体实现"><a class="header" href="#3解耦具体实现">3、解耦具体实现</a></h4>
+<p>在系统架构中，解耦是很核心的一件事。我们通过定义抽象工厂接口，把产品的“使用”与“创建”彻底分开。比如我们平时在 Spring 中用 <code>getBean()</code> 获取对象时，根本不用管底层是用反射、CGLIB 还是单例池，具体策略全都被 <code>ApplicationContext</code> 屏蔽掉了。这样的好处是测试、替换、升级都不需要改动业务逻辑，系统整体也变得更灵活。</p>
+<h2 id="相关面试题"><a class="header" href="#相关面试题">相关面试题</a></h2>
+<p>可以在 <a href="https://www.mianshiya.com/">程序员面试刷题神器 - 面试鸭</a> 上获取到企业常问的设计模式面试题。比如：</p>
+<p>1）<a href="https://www.mianshiya.com/bank/1801559627969929217/question/1801818998708707329">工厂模式和抽象工厂模式有什么区别？ </a></p>
+<p><img src="./img/83.png" alt=""></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../DesignPattern/2-单例模式.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../DesignPattern/4-建造者模式.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../DesignPattern/2-单例模式.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../DesignPattern/4-建造者模式.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

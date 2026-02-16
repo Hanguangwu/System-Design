@@ -1,0 +1,531 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>21-责任链模式 - The Zen of Programming</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-4fa65084.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-df451732.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Zen of Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h2 id="什么是责任链模式"><a class="header" href="#什么是责任链模式">什么是责任链模式？</a></h2>
+<p><strong>责任链模式</strong>（Chain of Responsibility Pattern）是一种行为型设计模式，它的核心思想就是：<strong>将多个处理请求的对象连接成一条链，每个对象在链上依次处理请求，直到有对象处理完请求为止</strong>。换句话说，当一个请求到来时，它会沿着链上的对象逐个传递，每个对象有机会去处理这个请求。如果当前对象无法处理，它就将请求传递给链上的下一个对象。</p>
+<p>就像我们平时遇到问题时，可能会先找一个人问，然后如果他不懂，就转交给下一个人，直到问题得到解决。每个人都承担自己可以处理的部分，任务逐级分配，直到问题得到处理。</p>
+<p>我举个例子哈。我们在公司请假时，流程其实挺像责任链的：请个两天假，组长就批了；请五天假，组长批不了，得往上递给部门经理；如果我想请个长假出去玩一个月，那就得让总监出面了。这种逐级审批的流程，本质上就是一条责任链。我只要发起请假申请，不管谁批的，反正最后有人能拍板就行。</p>
+<p><img src="./img/102.png" alt=""></p>
+<p>我们写代码时也会遇到类似的情况。比如做一个请求拦截器链条，先做权限校验，再做参数校验，最后可能还有个日志记录。每个环节负责自己那一块，不用知道前后是谁，只管干自己的事，整体逻辑就非常清晰、灵活，后续扩展也方便。</p>
+<h2 id="为什么要使用责任链模式"><a class="header" href="#为什么要使用责任链模式">为什么要使用责任链模式？</a></h2>
+<p>在实际开发中，我们经常会遇到某个请求需要经过多个处理环节。例如，一个订单系统可能需要经过库存检查、支付验证、配送安排等多个步骤。如果这些步骤放在一个类里处理，逻辑会非常混乱，并且修改起来也非常麻烦。而责任链模式通过将这些处理环节分成多个对象，每个对象只处理自己负责的部分，并将处理结果传递给下一个环节，清晰明了，方便扩展和维护。这样，我们不仅可以避免一个类内堆砌过多的业务逻辑，还能动态地调整责任链的顺序和处理方式。</p>
+<p>为了让大家更好地感受到责任链模式的作用，以订单优惠处理为例，我们需要实现一个支持多种优惠策略的系统。让我们来看看使用和不使用责任链模式的区别：</p>
+<p><img src="./img/103.png" alt=""></p>
+<p>通过对比可以看出，不使用责任链模式时，订单类中包含了所有优惠处理的逻辑，使用大量的条件判断来处理不同的优惠策略。这种方式导致代码结构复杂，难以维护，且添加新的优惠策略需要修改现有代码，违反了开闭原则。</p>
+<p>而使用责任链模式后，我们将每个优惠策略封装成独立的处理器类，通过责任链的方式将它们连接起来。这种设计使得代码结构更加清晰，降低了耦合度，提高了代码的可维护性。同时，责任链模式也使得系统更容易扩展，添加新的优惠策略只需要创建新的处理器类即可。</p>
+<h2 id="责任链模式的应用场景"><a class="header" href="#责任链模式的应用场景">责任链模式的应用场景</a></h2>
+<p>举一些开发中典型的应用场景：</p>
+<ul>
+<li>用户请求的权限校验流程：在企业权限系统中，一个请求可能需要经过多个层级的权限校验，如登录校验、角色校验、操作权限校验等。使用责任链模式可以将每个校验步骤封装成独立处理器，按顺序处理请求，便于扩展与维护。</li>
+<li>电商系统的订单优惠处理：下单时可能存在多种优惠（满减、折扣、优惠券、会员折扣等），这些优惠可能需要按顺序叠加或互斥。通过责任链模式，将每种优惠逻辑封装成一个处理节点，逐个执行判断和计算。</li>
+<li>内容审核系统中的多级规则过滤：在社区、短视频、评论系统中，内容发布前可能需经过“敏感词过滤 → 图片检测 → 风险用户识别 → 自定义规则”等多个审核步骤。每个过滤器作为链中的一环，统一处理内容审核流程。</li>
+</ul>
+<h2 id="责任链模式基本结构"><a class="header" href="#责任链模式基本结构">责任链模式基本结构</a></h2>
+<p>责任链模式具有的角色和职责：</p>
+<p>1）抽象处理者（Handler）：声明一个处理请求的接口，通常包括一个方法<code>handleRequest()</code>，并且持有对下一个处理者的引用。</p>
+<p>2）具体处理者（ConcreteHandler）：实现抽象处理者的处理方法，如果当前对象能够处理请求，就处理它；否则，将请求转发给链上的下一个对象。</p>
+<p>3）客户端（Client）：客户端负责构造责任链并发送请求，它不需要关心请求如何被处理，只需要向责任链传递请求即可。</p>
+<p>下面用一张类图帮大家更直观地理解责任链模式的结构：</p>
+<p><img src="./img/104.png" alt=""></p>
+<h2 id="责任链模式的实现"><a class="header" href="#责任链模式的实现">责任链模式的实现</a></h2>
+<p>下面就以 “订单优惠处理” 为例，我们用责任链模式实现一个简单的订单优惠系统。</p>
+<p>1）定义优惠处理接口：声明各类优惠的处理方法</p>
+<pre><code class="language-java">interface DiscountHandler {
+    void setNextHandler(DiscountHandler handler);  // 设置下一个处理器
+    void applyDiscount(Order order); // 应用优惠策略
+}
+</code></pre>
+<p>在这段代码中，我们定义了一个 <code>DiscountHandler</code> 接口，表示优惠处理的抽象类。每个优惠处理器需要实现 <code>applyDiscount()</code> 方法来处理订单优惠，同时通过 <code>setNextHandler()</code> 方法设置责任链中的下一个处理节点。</p>
+<p>2）实现具体的优惠处理类：每个优惠作为一个处理器</p>
+<pre><code class="language-java">class FullReductionDiscountHandler implements DiscountHandler {
+    private DiscountHandler nextHandler;  // 下一个处理器
+
+    @Override
+    public void setNextHandler(DiscountHandler handler) {
+        this.nextHandler = handler;
+    }
+
+    @Override
+    public void applyDiscount(Order order) {
+        if (order.getAmount() &gt; 200) {
+            System.out.println("满减折扣: -50");
+            order.setAmount(order.getAmount() - 50);
+        }
+        if (nextHandler != null) {
+            nextHandler.applyDiscount(order);  // 继续传递给下一个处理器
+        }
+    }
+}
+
+class CouponDiscountHandler implements DiscountHandler {
+    private DiscountHandler nextHandler;
+
+    @Override
+    public void setNextHandler(DiscountHandler handler) {
+        this.nextHandler = handler;
+    }
+
+    @Override
+    public void applyDiscount(Order order) {
+        if (order.hasCoupon()) {
+            System.out.println("优惠券折扣: -30");
+            order.setAmount(order.getAmount() - 30);
+        }
+        if (nextHandler != null) {
+            nextHandler.applyDiscount(order);
+        }
+    }
+}
+
+class MemberDiscountHandler implements DiscountHandler {
+    private DiscountHandler nextHandler;
+
+    @Override
+    public void setNextHandler(DiscountHandler handler) {
+        this.nextHandler = handler;
+    }
+
+    @Override
+    public void applyDiscount(Order order) {
+        if (order.isMember()) {
+            System.out.println("会员折扣: -20");
+            order.setAmount(order.getAmount() - 20);
+        }
+        if (nextHandler != null) {
+            nextHandler.applyDiscount(order);
+        }
+    }
+}
+</code></pre>
+<p>在这段代码中，我们实现了三个具体的优惠处理类：<code>FullReductionDiscountHandler</code>（满减优惠）、<code>CouponDiscountHandler</code>（优惠券优惠）和 <code>MemberDiscountHandler</code>（会员优惠）。每个类都有 <code>applyDiscount()</code> 方法来执行相应的优惠逻辑，并通过责任链将处理过程传递下去。</p>
+<p>3）定义订单类：包含订单金额和优惠逻辑</p>
+<pre><code class="language-java">class Order {
+    private double amount;  // 订单金额
+    private boolean hasCoupon;  // 是否使用了优惠券
+    private boolean isMember;  // 是否为会员
+
+    public Order(double amount, boolean hasCoupon, boolean isMember) {
+        this.amount = amount;
+        this.hasCoupon = hasCoupon;
+        this.isMember = isMember;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public boolean hasCoupon() {
+        return hasCoupon;
+    }
+
+    public boolean isMember() {
+        return isMember;
+    }
+}
+</code></pre>
+<p>在这段代码中，我们定义了一个 <code>Order</code> 类，包含订单的金额、是否使用了优惠券以及是否是会员的标志。通过这些字段，优惠处理类可以判断是否应用相应的优惠。</p>
+<p>4）客户端调用示例</p>
+<pre><code class="language-java">public class Client {
+    public static void main(String[] args) {
+        Order order = new Order(250, true, true);  // 创建订单
+
+        // 创建各个优惠处理器
+        DiscountHandler fullReductionHandler = new FullReductionDiscountHandler();
+        DiscountHandler couponHandler = new CouponDiscountHandler();
+        DiscountHandler memberHandler = new MemberDiscountHandler();
+
+        // 设置责任链：优惠处理器依次连接
+        fullReductionHandler.setNextHandler(couponHandler);
+        couponHandler.setNextHandler(memberHandler);
+
+        // 开始应用优惠
+        fullReductionHandler.applyDiscount(order);  // 从满减开始处理
+        System.out.println("最终订单金额: " + order.getAmount());
+    }
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code class="language-plain">满减折扣: -50
+优惠券折扣: -30
+会员折扣: -20
+最终订单金额: 150.0
+</code></pre>
+<p>在客户端测试中，首先创建一个订单对象，并依次创建了满减、优惠券、会员优惠处理器。通过 <code>setNextHandler()</code> 方法将它们链接成一个责任链。最后，通过调用 <code>applyDiscount()</code> 方法开始依次处理订单的各项优惠，最终得到处理后的订单金额。</p>
+<h2 id="责任链模式的优缺点"><a class="header" href="#责任链模式的优缺点">责任链模式的优缺点</a></h2>
+<h3 id="优点"><a class="header" href="#优点">优点</a></h3>
+<ul>
+<li><strong>减少了耦合性</strong>：责任链模式通过将请求的处理分配给多个对象，每个对象只负责自己能处理的部分，避免了请求者和处理者之间的直接耦合。请求者无需知道请求最终由哪个对象处理。</li>
+<li><strong>灵活的请求处理方式</strong>：责任链中的处理者可以根据需求动态调整，灵活地控制请求的流转路径。每个处理者决定是否处理请求，或者将请求传递给下一个处理者，确保了请求的灵活处理。</li>
+<li><strong>可扩展性强</strong>：通过增加新的处理者，可以轻松地扩展责任链。当新增的处理逻辑不影响其他部分时，系统能够非常平滑地扩展，符合开闭原则。</li>
+</ul>
+<h3 id="缺点"><a class="header" href="#缺点">缺点</a></h3>
+<ul>
+<li><strong>不容易调试</strong>：由于请求在链中的多个对象之间传递，可能会导致调试时不容易追踪请求的处理路径。如果链条比较长或者复杂，调试过程可能变得比较麻烦。</li>
+<li><strong>可能造成性能问题</strong>：如果责任链中的处理者较多且每个处理者都需要做一些复杂的操作，可能会导致请求的处理变慢，影响系统性能。</li>
+<li><strong>责任链的管理复杂性</strong>：虽然责任链模式能够使系统的扩展变得简单，但当责任链较长时，管理和维护责任链中的各个处理者可能会变得复杂。如果链条太长或处理者数量过多，整个责任链的维护成本也会增加。</li>
+</ul>
+<h2 id="扩展知识---源码分析"><a class="header" href="#扩展知识---源码分析">扩展知识 - 源码分析</a></h2>
+<h3 id="开源框架中的应用"><a class="header" href="#开源框架中的应用">开源框架中的应用</a></h3>
+<h4 id="1jdk"><a class="header" href="#1jdk">1、JDK</a></h4>
+<p>在 JDK 中，Servlet 规范里的 <strong>Filter 链</strong>（FilterChain）就是责任链模式的一个经典实现场景。</p>
+<p>我们可以简单回顾一下 Servlet 中请求是怎么被处理的：请求到达服务器之后，首先会经过我们配置的一系列过滤器，每个过滤器都可以决定是否继续往下传递请求，或者中断整个链条。这就是责任链的核心思想 —— 一条链条上挂着多个处理节点，每个节点都有“放行”或“拦截”的能力。</p>
+<p>我们看下源码：</p>
+<pre><code class="language-java">/**
+ * ApplicationFilterChain 是 Servlet 规范中的过滤器链实现类。
+ * 它负责按顺序调用多个 Filter，然后最终调用目标 Servlet。
+ */
+public final class ApplicationFilterChain implements FilterChain {
+
+    // 存储过滤器配置的数组，每个元素对应一个 Filter
+    private ApplicationFilterConfig[] filters = new ApplicationFilterConfig[0];
+
+    // 当前正在执行的过滤器索引（指针）
+    private int pos = 0;
+
+    // 实际过滤器数量
+    private int n = 0;
+
+    /**
+     * 过滤器链的核心执行方法。
+     * 会依次调用链中的每个 Filter 的 doFilter 方法，
+     * 最后调用目标 Servlet 的 service 方法。
+     */
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response)
+        throws IOException, ServletException {
+
+        // 如果启用了 Java 安全管理器（SecurityManager），则以特权操作执行过滤器链
+        if (Globals.IS_SECURITY_ENABLED) {
+            final ServletRequest req = request;
+            final ServletResponse res = response;
+            try {
+                // 使用 AccessController 执行受限操作
+                java.security.AccessController.doPrivileged(
+                    (java.security.PrivilegedExceptionAction&lt;Void&gt;) () -&gt; {
+                        // 实际执行过滤器链逻辑
+                        internalDoFilter(req, res);
+                        return null;
+                    }
+                );
+            } catch (PrivilegedActionException pe) {
+              // 省略代码...
+            }
+        } else {
+            // 没有启用安全机制时，直接执行过滤器链
+            internalDoFilter(request, response);
+        }
+    }
+
+    // 省略 internalDoFilter 方法（通常用于实际按顺序调用过滤器和 Servlet）
+}
+
+</code></pre>
+<p>每个过滤器内部的 <code>doFilter</code> 方法都有一个 <code>FilterChain</code> 参数，这个参数的作用就是让过滤器有能力“放行”到下一个过滤器。</p>
+<p>也就是说，责任链模式在这里的实现是通过递归或者迭代的方式，把请求逐步传递给下一个责任节点（过滤器），每个节点各司其职。</p>
+<p>我们可以用一张类图来简化这个结构：</p>
+<p><img src="./img/105.png" alt=""></p>
+<h4 id="2spring-框架"><a class="header" href="#2spring-框架">2、Spring 框架</a></h4>
+<p>在 Spring 中，<strong>HandlerInterceptor</strong> 的链式执行也是责任链模式的体现。</p>
+<p>Interceptor 拦截器其实跟 Filter 有点像，它们都可以在请求前后做一些操作。但是 Interceptor 是更靠近 Spring MVC 的，它作用于控制器的调用过程。</p>
+<p>我们可以看下 <code>HandlerExecutionChain</code> 是怎么实现责任链的：</p>
+<pre><code class="language-java">/**
+ * 表示一个处理器执行链，包含实际的处理器对象（如 Controller 方法）和一组拦截器。
+ * 每个请求会对应一个 HandlerExecutionChain。
+ */
+public class HandlerExecutionChain {
+
+    // 实际执行的处理器对象，比如某个 Controller 方法
+    private final Object handler;
+
+    // 拦截器列表，用于在 handler 执行前后进行拦截处理
+    private final List&lt;HandlerInterceptor&gt; interceptors = new ArrayList&lt;&gt;();
+
+    // 记录已成功执行 preHandle 的拦截器索引，用于 afterCompletion 回调时回退调用
+    private int interceptorIndex = -1;
+
+    /**
+     * 执行所有拦截器的 preHandle 方法（按顺序）。
+     * 如果有一个返回 false，表示请求被拦截，中断后续流程。
+     * 
+     * @return true 表示继续处理请求；false 表示中断处理流程
+     */
+    boolean applyPreHandle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        for (int i = 0; i &lt; this.interceptors.size(); i++) {
+            HandlerInterceptor interceptor = this.interceptors.get(i);
+            // 如果拦截器返回 false，触发 afterCompletion 回调，并中止处理
+            if (!interceptor.preHandle(request, response, this.handler)) {
+                triggerAfterCompletion(request, response, null);
+                return false;
+            }
+            // 记录已成功执行的拦截器索引
+            this.interceptorIndex = i;
+        }
+        return true;
+    }
+
+    /**
+     * 在 handler 执行完之后，调用所有拦截器的 postHandle 方法（按倒序）。
+     */
+    void applyPostHandle(HttpServletRequest request, HttpServletResponse response, @Nullable ModelAndView mv)
+            throws Exception {
+        for (int i = this.interceptors.size() - 1; i &gt;= 0; i--) {
+            HandlerInterceptor interceptor = this.interceptors.get(i);
+            interceptor.postHandle(request, response, this.handler, mv);
+        }
+    }
+
+    // 假设还有一个 triggerAfterCompletion 方法，负责触发所有拦截器的 afterCompletion 回调（按倒序）
+}
+
+</code></pre>
+<p>每个 Interceptor 可以在控制器执行前进行预处理（<code>preHandle</code>），也可以在控制器执行后进行后置处理（<code>postHandle</code>）。如果有一个 Interceptor 决定不放行，整个链条就会被中断。</p>
+<p>我们通过类图来简单看下结构：</p>
+<p><img src="./img/106.png" alt=""></p>
+<h3 id="优势和作用"><a class="header" href="#优势和作用">优势和作用</a></h3>
+<p>通过上述的源码分析，我们可以再次总结下责任链模式的作用。</p>
+<h4 id="1提高代码的可维护性"><a class="header" href="#1提高代码的可维护性">1、提高代码的可维护性</a></h4>
+<p>我们在 Filter 或 Interceptor 链上添加新的处理逻辑时，不需要去改已有的类逻辑，只需要新增一个过滤器或拦截器，再加到链条里就可以了。这种方式让每个节点的职责都非常清晰，修改起来也很安全，维护成本低。</p>
+<h4 id="2增强系统的扩展能力"><a class="header" href="#2增强系统的扩展能力">2、增强系统的扩展能力</a></h4>
+<p>比如我们有一个订单系统，假设需要在请求处理前先进行权限校验、再记录日志、再做数据脱敏。用责任链模式之后，我们只需要依次添加几个拦截器（或者过滤器），每个模块都独立，互不影响。新增或替换其中某个处理流程都很容易，不会牵一发而动全身。</p>
+<h4 id="3提升代码结构的清晰度"><a class="header" href="#3提升代码结构的清晰度">3、提升代码结构的清晰度</a></h4>
+<p>通过链式结构，整个请求处理流程是线性的、可预测的。每一层都只关注自己的职责，这种“单一职责 + 链式组合”的方式，极大地提高了代码的清晰度。</p>
+<h2 id="相关面试题"><a class="header" href="#相关面试题">相关面试题</a></h2>
+<p>可以在 <a href="https://www.mianshiya.com/">程序员面试刷题神器 - 面试鸭</a> 上获取到企业常问的设计模式面试题。比如：</p>
+<p>1）<a href="https://www.mianshiya.com/bank/1801559627969929217/question/1803305518413373442">什么是责任链模式？一般用在什么场景？ </a></p>
+<p><img src="./img/107.png" alt=""></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../DesignPattern/20-状态模式.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../DesignPattern/22-解释器模式.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../DesignPattern/20-状态模式.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../DesignPattern/22-解释器模式.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

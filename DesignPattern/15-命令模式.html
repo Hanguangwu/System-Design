@@ -1,0 +1,417 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>15-命令模式 - The Zen of Programming</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-4fa65084.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-df451732.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Zen of Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h2 id="什么是命令模式"><a class="header" href="#什么是命令模式">什么是命令模式？</a></h2>
+<p><strong>命令模式</strong>（Command Pattern）是一种行为型设计模式。它的核心思想是：<strong>把请求封装成一个对象</strong>，这样我们就能用不同的请求、队列或者日志来参数化其他对象，同时也支持可撤销操作。</p>
+<p>简单来说，就是把“干什么”和“怎么干”分开了。发送请求的人只需要负责提出需求，不需要关心具体怎么执行。而执行的人，拿到命令对象，就知道要做什么了。</p>
+<p>举个生活里的例子，比如鱼皮我在忙着写教程的时候，会让同事安排点事：“明天早上帮我订张去北京的高铁票”、“今天下班前把这个代码提交了”，这些请求就像是一条条命令，而同事负责的就是把命令照着执行。这期间我不用操心执行细节，同事也不用搞清楚为什么要这么做，只要任务写清楚，拿到命令就能干活。而且我还可以随时更改任务，比如取消订票、把提交代码的时间提前，也就是“撤销命令”或“重新安排命令”。这不就是命令模式的真实写照吗？</p>
+<p><img src="./img/21.png" alt=""></p>
+<p>程序里也一样，比如我们要实现一个“操作队列”，或者需要“支持撤销功能”的按钮系统（比如文档软件里的 Ctrl + Z），命令模式就特别好用。你可以把每一次操作封装成一个命令对象，然后放到队列里去统一处理，什么时候执行、执行几次、要不要撤销，都能灵活控制。</p>
+<h2 id="为什么要使用命令模式"><a class="header" href="#为什么要使用命令模式">为什么要使用命令模式？</a></h2>
+<p>在开发过程中，常常会遇到这样的需求：我们需要把请求的发送者和请求的执行者隔离开来，让两者之间不直接依赖。这种场景下，如果直接在发送者中硬编码调用执行逻辑，系统就会变得很僵硬，未来一旦执行逻辑要变化，发送者的代码也不得不改动。</p>
+<p>命令模式通过把操作封装成对象，让请求发送者只负责发出命令，不需要知道命令具体是怎么执行的。这样不仅降低了耦合度，还能轻松做到记录日志、排队执行、撤销操作等功能。整体上，命令模式让系统更加灵活、可扩展、好维护。</p>
+<p>为了让大家更好地感受到命令模式的作用，以任务调度系统为例，我们需要实现一个灵活的任务执行平台，支持多种类型的任务调度。让我们来看看使用和不使用命令模式的区别：</p>
+<p><img src="./img/22.png" alt=""></p>
+<p>通过对比可以看出，不使用命令模式时，任务调度器需要直接处理所有类型的任务，使用 if 语句进行判断。这种方式导致代码耦合度高且维护困难，每当需要添加新的任务类型时，都需要修改<code>Scheduler</code>类的代码，违反了开闭原则。</p>
+<p>而使用命令模式后，我们将每个任务封装成独立的命令对象，通过Task接口统一管理。<code>TaskScheduler</code>类不再关心具体的任务执行逻辑，只需要调用命令对象的 execute 方法即可。这种设计使得系统更加灵活，添加新的任务类型只需要创建新的命令类，无需修改现有代码。同时，命令模式也使得代码结构更加清晰，每个命令类都专注于自己的职责，提高了代码的可维护性。</p>
+<h2 id="命令模式的应用场景"><a class="header" href="#命令模式的应用场景">命令模式的应用场景</a></h2>
+<p>举一些开发中典型的应用场景：</p>
+<ul>
+<li>任务调度系统中的任务封装：在定时任务或调度平台中，不同的任务操作（如发送邮件、生成报表、备份数据）可以被封装成命令对象，通过命令模式统一调度、管理和执行任务，支持任务队列、日志记录、失败重试等功能。</li>
+<li>界面操作的撤销与重做功能：在图形编辑器、表格编辑器或代码编辑器中，用户的每一次操作（如插入、删除、修改）都可以被封装成命令对象，支持执行、撤销和重做等操作。命令模式可以帮助记录用户操作历史，实现操作回滚功能。</li>
+<li>消息中间件中的指令执行模型：在基于MQ的系统中，不同类型的消息可以对应不同的业务指令，如订单处理、用户注册、支付完成等。通过命令模式，每种消息对应一个命令对象，消息消费者执行接收到的命令对象，从而实现解耦和扩展。</li>
+</ul>
+<h2 id="命令模式的基本结构"><a class="header" href="#命令模式的基本结构">命令模式的基本结构</a></h2>
+<p>命令模式具有的角色和职责：</p>
+<p>1）命令接口（Command）：声明执行操作的方法，比如<code>execute()</code>。</p>
+<p>2）具体命令（ConcreteCommand）：实现命令接口，负责调用接收者（Receiver）去完成请求。</p>
+<p>3）接收者（Receiver）：真正执行具体业务逻辑的人（类）。</p>
+<p>4）请求者（Invoker）：负责调用命令对象来执行请求。</p>
+<p>5）客户端（Client）：创建具体命令对象并设置好接收者，最后把命令交给请求者执行。</p>
+<p>下面用一张类图帮大家更直观地理解命令模式的结构：</p>
+<p><img src="./img/23.png" alt=""></p>
+<h2 id="命令模式的实现"><a class="header" href="#命令模式的实现">命令模式的实现</a></h2>
+<p>下面就以“任务调度系统”为例，我们用命令模式来构建一个可扩展的任务执行平台。</p>
+<p>1）定义命令接口：所有任务的统一接口</p>
+<pre><code class="language-java">public interface Task {
+    void execute();
+}
+</code></pre>
+<p>命令接口 <code>Task</code> 代表所有可执行的调度任务，比如发邮件、备份、报表等，调用方式统一。</p>
+<p>2）定义具体任务类：实现不同的业务操作</p>
+<pre><code class="language-java">public class EmailTask implements Task {
+    @Override
+    public void execute() {
+        System.out.println("发送通知邮件...");
+        // 实际的发邮件逻辑
+    }
+}
+</code></pre>
+<pre><code class="language-java">public class BackupTask implements Task {
+    @Override
+    public void execute() {
+        System.out.println("正在备份数据库...");
+        // 实际的备份逻辑
+    }
+}
+</code></pre>
+<pre><code class="language-java">public class ReportTask implements Task {
+    @Override
+    public void execute() {
+        System.out.println("生成业务报表...");
+        // 实际的报表生成逻辑
+    }
+}
+</code></pre>
+<p>每个任务类代表一个可执行的命令对象，内部封装具体的业务逻辑，便于独立管理和扩展。</p>
+<p>3）定义任务调度器：统一调度任务队列并执行</p>
+<pre><code class="language-java">import java.util.LinkedList;
+import java.util.Queue;
+
+public class TaskScheduler {
+    private Queue&lt;Task&gt; taskQueue = new LinkedList&lt;&gt;();
+
+    public void addTask(Task task) {
+        taskQueue.offer(task);
+    }
+
+    public void run() {
+        while (!taskQueue.isEmpty()) {
+            Task task = taskQueue.poll();
+            try {
+                task.execute();
+                System.out.println("任务执行成功！");
+            } catch (Exception e) {
+                System.out.println("任务执行失败，记录日志以供重试...");
+            }
+        }
+    }
+}
+</code></pre>
+<p>调度器负责统一管理所有任务对象，可以实现任务队列、任务执行、异常捕获等一整套执行流程。</p>
+<p>4）客户端调用示例</p>
+<pre><code class="language-java">public class SchedulerClient {
+    public static void main(String[] args) {
+        TaskScheduler scheduler = new TaskScheduler();
+
+        scheduler.addTask(new EmailTask());
+        scheduler.addTask(new BackupTask());
+        scheduler.addTask(new ReportTask());
+
+        scheduler.run();
+    }
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code class="language-plain">发送通知邮件...
+任务执行成功！
+正在备份数据库...
+任务执行成功！
+生成业务报表...
+任务执行成功！
+</code></pre>
+<p>命令模式的核心价值就在这里：我们将“做什么任务”抽象成一个命令对象，统一交由调度器来“何时执行”和“如何调度”，两者完全解耦。增加一个新任务，只需新建一个 <code>Task</code> 实现类，无需改动调度器。</p>
+<h2 id="命令模式的优缺点"><a class="header" href="#命令模式的优缺点">命令模式的优缺点</a></h2>
+<h3 id="优点"><a class="header" href="#优点">优点</a></h3>
+<ul>
+<li><strong>解耦请求者和执行者</strong>：命令模式通过将请求和执行操作分离，避免了请求者直接调用具体的执行者。这样，调用者无需知道具体的实现，只需要发出命令即可，从而减少了对象之间的依赖和耦合。</li>
+<li><strong>支持撤销/恢复操作</strong>：命令模式能够方便地实现操作的撤销和恢复。通过保存命令对象和其执行状态，可以在需要时撤销已执行的命令或恢复到之前的状态。</li>
+<li><strong>增加新的命令很方便</strong>：只需要创建新的命令类并实现相应的执行逻辑，就可以方便地增加新的命令，不需要修改现有的代码，符合开闭原则。</li>
+<li><strong>支持宏命令</strong>：命令模式可以通过将多个命令组合成一个宏命令来实现批量操作，方便了复杂操作的组织和管理。</li>
+</ul>
+<h3 id="缺点"><a class="header" href="#缺点">缺点</a></h3>
+<ul>
+<li><strong>类的数量增加</strong>：每个命令都需要一个对应的命令类，这会导致系统中的类数量增加，代码可能变得比较冗长，管理和维护成本上升。</li>
+<li><strong>命令的管理和维护</strong>：如果命令过多，可能会导致命令类和命令的管理变得复杂，尤其是对于需要撤销和恢复的命令，状态的维护可能会带来额外的复杂度。</li>
+<li><strong>不适合简单的场景</strong>：如果系统的操作非常简单且没有复杂的撤销/恢复需求，使用命令模式可能会显得过于复杂，反而增加了不必要的开销。</li>
+</ul>
+<h2 id="扩展知识---源码分析"><a class="header" href="#扩展知识---源码分析">扩展知识 - 源码分析</a></h2>
+<h3 id="开源框架中的应用"><a class="header" href="#开源框架中的应用">开源框架中的应用</a></h3>
+<h4 id="1jdk"><a class="header" href="#1jdk">1、JDK</a></h4>
+<p>在 JDK 里，命令模式最典型的应用就是线程池里的 <code>Runnable</code> 和 <code>Executor</code>。</p>
+<p>我们可以这样理解：</p>
+<ul>
+<li><code>Runnable</code> 相当于一个“命令对象”，里面封装了具体要执行的业务逻辑。</li>
+<li><code>Executor</code> 是一个“命令的调用者”，负责接收并触发这些命令。</li>
+</ul>
+<pre><code class="language-java">// 命令接口，相当于 Command
+@FunctionalInterface
+public interface Runnable {
+    public abstract void run();
+}
+
+// 命令接收者，可以执行命令
+public class Thread {
+    public Thread(Runnable target) {
+        init(null, target, "Thread-" + nextThreadNum(), 0);
+    }
+
+    @Override
+    public void run() {
+        if (target != null) {
+            target.run();
+        }
+    }
+}
+
+// 命令调用者，相当于 Invoker
+public interface Executor {
+    void execute(Runnable command);
+}
+
+</code></pre>
+<p>在我们使用线程池时，会这么写：</p>
+<pre><code class="language-java">Executor executor = Executors.newFixedThreadPool(2);
+executor.execute(() -&gt; {
+    System.out.println("处理一段业务逻辑");
+});
+
+</code></pre>
+<p>这就是命令模式的使用场景：我们把具体要做的事封装成一个 <code>Runnable</code>，然后丢给 <code>Executor</code> 来执行。</p>
+<h3 id="优势和作用"><a class="header" href="#优势和作用">优势和作用</a></h3>
+<p>通过上述的源码分析，我们可以再次总结下命令模式的作用。</p>
+<h4 id="1统一执行入口提高解耦性"><a class="header" href="#1统一执行入口提高解耦性">1、统一执行入口，提高解耦性</a></h4>
+<p>命令模式的一个核心优势是：它把“做什么”和“怎么执行”给分开了。比如在线程池里，提交任务的人只需要实现 <code>Runnable</code>，不需要关心线程调度的细节；而线程池只管调度和执行任务，也不需要知道具体业务逻辑。这种分工，特别适合解耦复杂系统中的职责划分。</p>
+<h4 id="2灵活支持命令队列撤销重做等机制"><a class="header" href="#2灵活支持命令队列撤销重做等机制">2、灵活支持命令队列、撤销、重做等机制</a></h4>
+<p>命令模式天然支持“记录每一个命令”，所以特别适合命令队列、操作日志、宏命令等需求。在一些流程编排系统或任务调度框架中，这种模式也很常见。</p>
+<h2 id="相关项目"><a class="header" href="#相关项目">相关项目</a></h2>
+<h4 id="编程导航的代码生成器平台项目"><a class="header" href="#编程导航的代码生成器平台项目">编程导航的代码生成器平台项目</a></h4>
+<p>在 <a href="https://www.codefather.cn/course/1790980795074654209">编程导航的代码生成器平台项目</a> 在项目中，我们遵循了 Picocli 框架的规范设计，将每个子命令封装为独立的命令类。例如，<code>GenerateCommand</code> 用于执行代码生成操作，<code>ListCommand</code> 用于列出模板文件，<code>ConfigCommand</code> 用于查看代码生成配置。各个命令类职责单一、彼此独立，便于后续的功能扩展和维护。</p>
+<p>在命令执行器类中，我们集中管理所有命令的注册和调用逻辑。通过 Picocli 提供的 API，将上述子命令统一绑定到主命令中。框架会根据用户在终端输入的命令自动完成解析，并分发执行相应的子命令，实现了清晰、灵活、可扩展的命令行交互体验。</p>
+<p><img src="./img/24.png" alt=""></p>
+<h2 id="相关面试题"><a class="header" href="#相关面试题">相关面试题</a></h2>
+<p>可以在 <a href="https://www.mianshiya.com/">程序员面试刷题神器 - 面试鸭</a> 上获取到企业常问的设计模式面试题。比如：</p>
+<p>1）<a href="https://www.mianshiya.com/bank/1801559627969929217/question/1802939265333927937">什么是命令模式？一般用在什么场景？ </a></p>
+<p><img src="./img/25.png" alt=""></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../DesignPattern/14-策略模式.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../DesignPattern/16-中介者模式.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../DesignPattern/14-策略模式.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../DesignPattern/16-中介者模式.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

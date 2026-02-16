@@ -1,0 +1,470 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>11-组合模式 - The Zen of Programming</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-4fa65084.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-df451732.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Zen of Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h2 id="什么是组合模式"><a class="header" href="#什么是组合模式">什么是组合模式？</a></h2>
+<p><strong>组合模式</strong>（Composite Pattern）是一种结构型设计模式，它是一种让我们可以用统一的方式来处理<strong>单个对象</strong>和<strong>一组对象</strong>的设计思路。它的核心思想就是：无论是一个元素，还是一组元素，我都用同一套接口、一致的方式去操作，不用每次都写一堆 if 判断去区分“你到底是个体还是整体”。</p>
+<p>在开发中，我们经常会碰到“部分-整体”的结构，比如文件系统：一个文件夹里可以放文件，也可以放文件夹，后者又可以继续嵌套文件……这时候如果每种情况都单独处理，会导致代码不够优雅。组合模式就让你像处理一个单独文件那样处理整个文件夹，递归也轻松搞定。</p>
+<p>举个例子，我们都搬过家吧，需要整理一大堆打包好的箱子。每个箱子里可能直接装着物品，比如一本书、一只杯子，也可能是一个更小的箱子，里面再装别的东西。</p>
+<p>最后你看着这些大箱子、小箱子，其实根本不用关心“它到底是单个物品，还是一堆东西的集合”，因为你对它们的处理方式是一样的——拿起来、贴个标签、装上车。这个过程中，你对“单件”和“组合”的操作方式是完全一致的。</p>
+<p><img src="./img/123.png" alt=""></p>
+<p>通俗点说，它就是帮我们把“单个”和“多个”的操作方式统一起来，让代码更简洁、更优雅，扩展也方便。</p>
+<h2 id="为什么要使用组合模式"><a class="header" href="#为什么要使用组合模式">为什么要使用组合模式？</a></h2>
+<p>系统开发中，随着功能的不断扩展，对象之间的关系往往变得复杂，有时候单个对象也能完成事情，有时候又需要一组对象配合才能完成。如果我们在代码里频繁去判断是单个对象还是一组对象，不仅逻辑繁琐，还容易出错。组合模式通过统一接口，把这两种情况统一起来，大大简化了客户端代码，让整体结构更加清晰，扩展起来也更加自然顺手。尤其是在涉及树形结构、递归处理的场景下，组合模式能帮我们优雅地管理这些复杂的对象关系。</p>
+<p>为了让大家更好地感受到组合模式的作用，以文件系统管理为例，我们需要管理文件和文件夹的层级结构。让我们来看看使用和不使用组合模式的区别：</p>
+<p><img src="./img/124.png" alt=""></p>
+<p>通过对比可以看出，不使用组合模式时，我们需要分别处理文件和文件夹两种不同的类型，这导致了代码的重复和复杂度的增加。每当需要添加新的操作时，都需要在文件和文件夹类中分别实现，而且客户端需要区分处理不同类型的节点。</p>
+<p>而使用组合模式后，我们通过统一的接口将文件和文件夹抽象为相同的组件，使得客户端可以用一致的方式处理所有节点。这种设计不仅简化了代码结构，还提高了系统的可扩展性。当需要添加新的操作时，只需要在接口中定义并在各个实现类中实现即可，无需修改客户端代码。</p>
+<h2 id="组合模式的应用场景"><a class="header" href="#组合模式的应用场景">组合模式的应用场景</a></h2>
+<p>举一些开发中典型的应用场景：</p>
+<ul>
+<li>文件系统管理：在一个文件管理系统中，文件和文件夹可以构成树形结构，文件夹可以包含多个文件或其他文件夹。组合模式可以将文件和文件夹抽象成统一的接口，使得在操作文件夹和文件时，可以使用相同的方法。比如，用户想删除一个文件夹，无论该文件夹中包含的是文件还是子文件夹，操作方式都是一样的。</li>
+<li>企业组织结构：在处理企业的组织结构时，可以将公司、部门、员工等抽象为组件。公司是一个组合对象，包含多个部门；部门可以包含多个员工。组合模式允许我们将公司、部门和员工看作一个统一的接口，方便在遍历和操作整个组织结构时使用相同的方式，无论操作的是公司、部门还是单个员工。</li>
+<li>菜单管理系统：在一个菜单管理系统中，菜单项可以是简单的单项（如一个按钮或链接）或者是复杂的菜单（如包含多个子菜单项的下拉菜单）。组合模式可以将菜单项和菜单容器统一处理，使得无论是普通菜单项还是包含子菜单的复合菜单，都能以相同的方式进行渲染、更新或删除。这样在实现菜单功能时，可以灵活地添加或修改菜单层级结构。</li>
+</ul>
+<h2 id="组合模式的基本结构"><a class="header" href="#组合模式的基本结构">组合模式的基本结构</a></h2>
+<p>组合模式具有的角色和职责：</p>
+<p>1）抽象组件（Component）：定义了所有组件（包括基本组件和容器组件）必须遵循的接口，比如公共的方法，比如添加、删除、获取子组件等。</p>
+<p>2）叶子节点（Leaf）：代表最基本的、不能再分的对象，比如普通员工。叶子节点实现了抽象组件定义的接口，但不会再包含子节点。</p>
+<p>3）容器节点（Composite）：代表可以包含子组件的对象，比如部门经理。容器节点同样实现了抽象组件接口，同时内部维护着子节点集合，并实现对子节点的添加、删除等操作。</p>
+<p>下面用一张类图帮大家更直观地理解组合模式的结构：</p>
+<p><img src="./img/125.png" alt=""></p>
+<h2 id="组合模式的实现"><a class="header" href="#组合模式的实现">组合模式的实现</a></h2>
+<p>下面就以 “文件系统管理” 为例，我们用组合模式实现一个简单的文件结构系统。</p>
+<p>1）定义统一的文件组件接口：声明操作方法，比如显示信息</p>
+<pre><code class="language-java">public interface FileComponent {
+    void display(String indent);
+}
+</code></pre>
+<p>这一步定义了组合模式的“抽象组件”，统一所有文件系统节点的操作接口，比如 <code>display()</code> 方法用于展示目录结构。</p>
+<p>2）实现叶子节点类：表示文件</p>
+<pre><code class="language-java">public class FileLeaf implements FileComponent {
+    private String name;
+
+    public FileLeaf(String name) {
+        this.name = name;
+    }
+
+    public void display(String indent) {
+        System.out.println(indent + "- 文件：" + name);
+    }
+}
+</code></pre>
+<p><code>FileLeaf</code> 是叶子节点类，代表文件，不包含其他子节点，只负责输出自己的名字，是组合结构中最底层的节点。</p>
+<p>3）实现组合节点类：表示文件夹</p>
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.List;
+
+public class FolderComposite implements FileComponent {
+    private String name;
+    private List&lt;FileComponent&gt; children = new ArrayList&lt;&gt;();
+
+    public FolderComposite(String name) {
+        this.name = name;
+    }
+
+    public void add(FileComponent component) {
+        children.add(component);
+    }
+
+    public void remove(FileComponent component) {
+        children.remove(component);
+    }
+
+    public void display(String indent) {
+        System.out.println(indent + "+ 文件夹：" + name);
+        for (FileComponent child : children) {
+            child.display(indent + "  ");
+        }
+    }
+}
+</code></pre>
+<p><code>FolderComposite</code> 是组合节点，代表文件夹，可以包含任意数量的子文件或子文件夹，实现递归遍历并展示结构，是组合模式的核心。</p>
+<p>4）客户端调用示例：构建并展示一个文件树结构</p>
+<pre><code class="language-java">public class FileSystemClient {
+    public static void main(String[] args) {
+        // 创建文件
+        FileLeaf file1 = new FileLeaf("readme.txt");
+        FileLeaf file2 = new FileLeaf("logo.png");
+        FileLeaf file3 = new FileLeaf("data.csv");
+
+        // 创建文件夹
+        FolderComposite root = new FolderComposite("根目录");
+        FolderComposite docs = new FolderComposite("文档");
+        FolderComposite images = new FolderComposite("图片");
+
+        // 构建层级关系
+        docs.add(file1);
+        images.add(file2);
+
+        root.add(docs);
+        root.add(images);
+        root.add(file3);
+
+        // 显示结构
+        root.display("");
+    }
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code class="language-plain">+ 文件夹：根目录
+  + 文件夹：文档
+    - 文件：readme.txt
+  + 文件夹：图片
+    - 文件：logo.png
+  - 文件：data.csv
+</code></pre>
+<p>客户端不需要关心节点到底是文件还是文件夹，只调用 <code>display()</code> 方法即可，组合模式让“整体”和“部分”拥有一致的操作方式，实现了对复杂结构的透明访问。</p>
+<h2 id="组合模式的优缺点"><a class="header" href="#组合模式的优缺点">组合模式的优缺点</a></h2>
+<h3 id="优点"><a class="header" href="#优点">优点</a></h3>
+<ul>
+<li><strong>树形结构的表示</strong>：组合模式能够将对象组织成树形结构，适用于表示“部分-整体”的层次结构，如文件系统、组织结构等。</li>
+<li><strong>统一性</strong>：客户端可以统一处理单个对象和对象集合，简化了代码的复杂性。在操作时无需区分复合对象与叶子节点，可以统一使用相同的接口进行操作。</li>
+<li><strong>扩展性</strong>：通过递归方式，容易为树形结构添加新的操作或新类型的对象，无需修改已有代码即可实现新功能。</li>
+<li><strong>灵活性</strong>：组合模式使得对象的组合和解组合更加灵活，组合结构可以按需变化。</li>
+</ul>
+<h3 id="缺点"><a class="header" href="#缺点">缺点</a></h3>
+<ul>
+<li><strong>过度泛化</strong>：组合模式可能会导致设计过于泛化，叶子节点和复合节点使用统一接口，可能会引起不必要的复杂性。如果不加区分，复合节点和叶子节点的功能可能会被过度简化，导致某些操作不符合实际需求。</li>
+<li><strong>不适合复杂对象</strong>：如果对象层次过于复杂，组合模式可能会导致大量的类和接口，增加系统的复杂性，降低维护性。</li>
+<li><strong>难以控制部分操作</strong>：当组合对象非常复杂时，处理某些特定的部分操作可能会变得困难，因为无法简单区分叶子节点和复合节点的行为。</li>
+</ul>
+<h2 id="扩展知识---源码分析"><a class="header" href="#扩展知识---源码分析">扩展知识 - 源码分析</a></h2>
+<h3 id="开源框架中的应用"><a class="header" href="#开源框架中的应用">开源框架中的应用</a></h3>
+<h4 id="1jdk"><a class="header" href="#1jdk">1、JDK</a></h4>
+<p>其在 JDK 中，<code>java.awt.Component</code> 体系就是组合模式的体现。</p>
+<p>在 AWT 的 UI 组件系统中，<code>Component</code> 是所有组件的父类，而 <code>Container</code> 是一种特殊的 <code>Component</code>，它可以嵌套别的 <code>Component</code>。</p>
+<pre><code class="language-java">public abstract class Component implements ImageObserver, MenuContainer,
+                                           Serializable{
+    // 所有 UI 组件的基类
+}
+
+public class Button extends Component implements Accessible {
+    // 叶子节点，没有子组件
+}
+
+public class Panel extends Container implements Accessible {
+    // 树枝节点，可以容纳别的 Component
+}
+
+</code></pre>
+<p>而 <code>Container</code> 是可以添加子组件的：</p>
+<pre><code class="language-java">public class Container extends Component {
+    private List&lt;Component&gt; componentList = new ArrayList&lt;&gt;();
+
+     public Component add(Component comp) {
+        addImpl(comp, null, -1);
+        return comp;
+    }
+}
+
+</code></pre>
+<p>这就形成了一个组合结构，<code>Component</code> 是统一接口，<code>Button</code> 是叶子节点，<code>Panel</code> 是组合节点，可以包含多个 <code>Component</code>。可以看下类图：</p>
+<p><img src="./img/126.png" alt=""></p>
+<h4 id="2spring-框架"><a class="header" href="#2spring-框架">2、Spring 框架</a></h4>
+<p>Spring Web MVC 中就大量使用了组合模式，其中几个非常典型的类包括：</p>
+<ul>
+<li><code>HandlerMethodArgumentResolverComposite</code></li>
+<li><code>HandlerMethodReturnValueHandlerComposite</code></li>
+<li><code>HandlerExceptionResolverComposite</code></li>
+<li><code>ViewResolverComposite</code></li>
+</ul>
+<p>我们以 <code>HandlerMethodArgumentResolverComposite</code> 为例来分析，这个类是 Spring MVC 在方法参数解析时用的组合容器。</p>
+<p>先看下这个类的部分源码结构：</p>
+<pre><code class="language-java">public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgumentResolver {
+    // 用于存储注册的参数解析器列表
+    private final List&lt;HandlerMethodArgumentResolver&gt; argumentResolvers = new ArrayList&lt;&gt;();
+
+    // 用于缓存已经解析过的参数对应的解析器，提高性能（此处未显示定义，实际源码中为 Map 缓存）
+    private final Map&lt;MethodParameter, HandlerMethodArgumentResolver&gt; argumentResolverCache =
+    new ConcurrentHashMap&lt;&gt;(256);
+
+    //添加一个参数解析器到组合中
+    public HandlerMethodArgumentResolverComposite addResolver(HandlerMethodArgumentResolver resolver) {
+        this.argumentResolvers.add(resolver);
+        return this;
+    }
+
+    // 判断是否支持解析某个方法参数
+    @Override
+    public boolean supportsParameter(MethodParameter parameter) {
+        return getArgumentResolver(parameter) != null;
+    }
+
+    // 根据参数查找支持该参数的解析器，并使用缓存提升性能
+    @Nullable
+    private HandlerMethodArgumentResolver getArgumentResolver(MethodParameter parameter) {
+        HandlerMethodArgumentResolver result = this.argumentResolverCache.get(parameter);
+        if (result == null) {
+            for (HandlerMethodArgumentResolver resolver : this.argumentResolvers) {
+                if (resolver.supportsParameter(parameter)) {
+                    result = resolver;
+                    this.argumentResolverCache.put(parameter, result);
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+    // 调用支持该参数的解析器进行参数解析
+    public Object resolveArgument(MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer,
+                                  NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) throws Exception {
+
+        HandlerMethodArgumentResolver resolver = getArgumentResolver(parameter);
+        if (resolver == null) {
+            throw new IllegalArgumentException("Unsupported parameter type [" +
+                                               parameter.getParameterType().getName() + "]. supportsParameter should be called first.");
+        }
+        return resolver.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
+    }
+}
+
+</code></pre>
+<p>可以看到，它本身实现了 <code>HandlerMethodArgumentResolver</code> 接口，但它内部是组合了一堆 <code>HandlerMethodArgumentResolver</code> 实例。</p>
+<p>也就是说，从客户端的角度来看，无论是使用一个解析器，还是一组解析器，使用方式完全一样。这就是组合模式的精髓。</p>
+<p>其他类似的组合器还有：</p>
+<p>1）<code>HandlerMethodReturnValueHandlerComposite</code><br>2）<code>HandlerExceptionResolverComposite</code><br>3）<code>ViewResolverComposite</code></p>
+<p>这些类的结构和思路都很接近，都是：自己实现接口，内部持有多个实现实例，统一代理转发调用。</p>
+<h3 id="优势和作用"><a class="header" href="#优势和作用">优势和作用</a></h3>
+<p>通过上述的源码分析，我们可以再次总结下组合模式的作用。</p>
+<h4 id="1统一处理逻辑简化调用"><a class="header" href="#1统一处理逻辑简化调用">1、统一处理逻辑，简化调用</a></h4>
+<p>组合模式可以让我们对“一个对象”还是“一组对象”进行统一处理，省去了调用方的条件判断和分支逻辑。比如参数解析器，我们不需要管到底是哪个解析器支持，组合器会统一负责找合适的。</p>
+<h4 id="2扩展性强插件式开发友好"><a class="header" href="#2扩展性强插件式开发友好">2、扩展性强，插件式开发友好</a></h4>
+<p>每个子解析器（HandlerMethodArgumentResolver 实现类）都可以独立实现，互不干扰，添加新的处理器只需要注册到组合器中，不用改原有逻辑。</p>
+<h4 id="3层级嵌套灵活天然适合处理树形结构"><a class="header" href="#3层级嵌套灵活天然适合处理树形结构">3、层级嵌套灵活，天然适合处理树形结构</a></h4>
+<p>像菜单、目录、组件树等天然结构，都适合用组合模式建模，结构清晰、功能解耦，容易维护。</p>
+<h2 id="相关面试题"><a class="header" href="#相关面试题">相关面试题</a></h2>
+<p>可以在 <a href="https://www.mianshiya.com/">程序员面试刷题神器 - 面试鸭</a> 上获取到企业常问的设计模式面试题。比如：</p>
+<p>1）<a href="https://www.mianshiya.com/bank/1801559627969929217/question/1802557097684312065">什么是组合模式？一般用在什么场景？ </a></p>
+<p><img src="./img/127.png" alt=""></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../DesignPattern/10-桥接模式.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../DesignPattern/12-享元模式.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../DesignPattern/10-桥接模式.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../DesignPattern/12-享元模式.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

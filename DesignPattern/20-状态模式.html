@@ -1,0 +1,455 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>20-状态模式 - The Zen of Programming</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-4fa65084.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-df451732.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Zen of Programming</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<h2 id="什么是状态模式"><a class="header" href="#什么是状态模式">什么是状态模式？</a></h2>
+<p><strong>状态模式</strong>（State Pattern）是一种行为型设计模式，它的核心思想是：<strong>允许对象在内部状态变化时，改变它的行为，看起来就像是对象本身发生了变化一样</strong>。</p>
+<p>换句话说，在不同的状态下，同一个对象的表现是不一样的。我们把状态相关的行为抽取成独立的状态类，然后让原来的对象根据当前的状态，把具体的工作交给对应的状态类来处理。</p>
+<p>这种设计的好处是，把原本一大堆 if-else 的状态切换逻辑拆分成小而清晰的模块。每个状态自己负责自己那一套行为，代码职责更明确，也更容易维护和扩展。</p>
+<p>如果打个比方，状态模式就像鱼皮的日常的多重身份切换：到公司我是“老板”，管理着公司日常运营，直播时我是“技术博主”，认真和大家分享干货；下班后切换成“健身小白”，练练拳击出出汗；晚上回家后变回“游戏玩家”，打开电脑快乐上分。一个人，不同状态，不同行为，但我还是我。</p>
+<p><img src="./img/12.png" alt=""></p>
+<p>类似的场景还有很多，比如地铁闸机。当我们还没刷卡时，它是“锁定”状态，挡着我们进不去；刷卡成功，它切换成“解锁”状态，就放行让我们通过；人一走完，它又自动切回“锁定”状态，准备迎接下一个人。整个过程，闸机自己在内部悄悄变换状态，不同状态做不同的事。</p>
+<p>所以，状态模式就是把“对象在不同状态下的不同表现”，用一个个独立的状态类来管理，然后根据需要动态切换当前状态，让对象在不知不觉中表现出完全不同的行为。</p>
+<h2 id="为什么要使用状态模式"><a class="header" href="#为什么要使用状态模式">为什么要使用状态模式？</a></h2>
+<p>在实际开发中，有些对象的行为是依赖于内部状态变化的，比如订单状态、工作流引擎、网络连接等等。如果我们直接在对象内部用一堆<code>if-else</code>或者<code>switch-case</code>去处理这些状态和行为，很快代码就会变得又长又难懂，维护起来非常麻烦。而且每次新增或修改一个状态，都要动到整个对象的逻辑，容易出错。<br>使用状态模式以后，每个状态对应一个独立的类，不同的行为分别管理，状态切换也变得有序清晰。既符合单一职责原则，又大大提高了代码的可读性、可维护性和扩展性。</p>
+<p>为了让大家更好地感受到状态模式的作用，以订单状态流转管理为例，我们需要实现一个支持订单状态转换的系统。让我们来看看使用和不使用状态模式的区别：</p>
+<p><img src="./img/13.png" alt=""></p>
+<p>通过对比可以看出，不使用状态模式时，订单类中包含了所有状态的处理逻辑，使用大量的条件判断来处理不同状态下的行为。这种方式导致代码结构复杂，难以维护，且添加新的状态需要修改现有代码，违反了开闭原则。</p>
+<p>而使用状态模式后，我们将每个状态封装成独立的类，状态之间的转换逻辑也变得更加清晰。这种设计使得代码结构更加清晰，降低了耦合度，提高了代码的可维护性。同时，状态模式也使得系统更容易扩展，添加新的状态只需要创建新的状态类，而不需要修改现有代码。</p>
+<h2 id="状态模式的应用场景"><a class="header" href="#状态模式的应用场景">状态模式的应用场景</a></h2>
+<p>举一些开发中典型的应用场景：</p>
+<ul>
+<li>订单状态流转管理：在电商系统中，订单从“待支付”到“已支付”“待发货”“已发货”“已完成”等状态流转，每种状态下允许的操作不同。使用状态模式可以将每种状态封装成一个独立类，清晰管理订单行为和状态变更逻辑。</li>
+<li>流程审批系统中的节点控制：在流程引擎中，表单或任务在“待审批”“审批中”“已通过”“已驳回”等状态之间转换，不同状态下的权限与处理方式各不相同。状态模式可以将审批行为和状态解耦，便于流程扩展和维护。</li>
+<li>用户账号的权限控制：在会员系统中，用户账号可能处于“正常”“冻结”“注销”等状态，不同状态下的可操作内容不同。状态模式可将这些状态和对应行为封装，简化权限校验逻辑。</li>
+</ul>
+<h2 id="状态模式基本结构"><a class="header" href="#状态模式基本结构">状态模式基本结构</a></h2>
+<p>状态模式具有的角色和职责：</p>
+<p>1）环境类（Context）：持有当前状态对象，负责状态的切换，同时对外暴露统一的行为接口。</p>
+<p>2）抽象状态类（State）：定义所有具体状态需要实现的接口或者抽象类。</p>
+<p>3）具体状态类（ConcreteState）：实现抽象状态定义的行为，每个具体状态类封装了对应的操作逻辑，并且可以决定是否切换到其他状态。</p>
+<p>下面用一张类图帮大家更直观地理解状态模式的结构：</p>
+<p><img src="./img/14.png" alt=""></p>
+<h2 id="状态模式的实现"><a class="header" href="#状态模式的实现">状态模式的实现</a></h2>
+<p>下面就以 “订单状态流转管理” 为例，我们用状态模式实现一个简单的订单管理系统。</p>
+<p>1）定义订单状态接口：声明订单的所有状态操作</p>
+<pre><code class="language-java">interface OrderState {
+    void handleRequest(Order order); // 处理订单请求，根据不同状态执行不同操作
+}
+</code></pre>
+<p>在这段代码中，我们定义了一个 <code>OrderState</code> 接口，表示订单的不同状态。该接口有一个 <code>handleRequest()</code> 方法，负责处理订单的不同操作，不同的状态类会提供不同的实现。</p>
+<p>2）实现具体的订单状态类：每个状态都作为一个类来实现</p>
+<pre><code class="language-java">class PendingState implements OrderState {
+    @Override
+    public void handleRequest(Order order) {
+        System.out.println("订单处于待支付状态，请支付。");
+        order.setState(new PaidState()); // 支付完成后，改变订单状态为已支付
+    }
+}
+
+class PaidState implements OrderState {
+    @Override
+    public void handleRequest(Order order) {
+        System.out.println("订单已支付，请发货。");
+        order.setState(new ShippedState()); // 发货后，改变订单状态为已发货
+    }
+}
+
+class ShippedState implements OrderState {
+    @Override
+    public void handleRequest(Order order) {
+        System.out.println("订单已发货，请等待接收。");
+        order.setState(new CompletedState()); // 完成后，改变订单状态为已完成
+    }
+}
+
+class CompletedState implements OrderState {
+    @Override
+    public void handleRequest(Order order) {
+        System.out.println("订单已完成。");
+    }
+}
+</code></pre>
+<p>在这里，我们为每种订单状态实现了一个具体的状态类。每个状态类都实现了 <code>OrderState</code> 接口的 <code>handleRequest()</code> 方法，具体的操作会根据当前状态执行相应的逻辑。</p>
+<p>3）定义订单类：管理当前订单状态并切换状态</p>
+<pre><code class="language-java">class Order {
+    private OrderState state;
+
+    public Order() {
+        this.state = new PendingState(); // 初始状态为“待支付”
+    }
+
+    public void setState(OrderState state) {
+        this.state = state;
+    }
+
+    public void request() {
+        state.handleRequest(this); // 调用当前状态的处理方法
+    }
+}
+</code></pre>
+<p>在这段代码中，我们定义了一个 <code>Order</code> 类，它包含了一个 <code>OrderState</code> 类型的成员变量 <code>state</code>，表示当前订单的状态。<code>setState()</code> 方法用于改变订单状态，<code>request()</code> 方法用于调用当前状态的处理方法。</p>
+<p>4）客户端调用示例</p>
+<pre><code class="language-java">public class Client {
+    public static void main(String[] args) {
+        Order order = new Order();  // 创建一个订单
+
+        // 客户端操作：订单请求
+        order.request();  // 初始状态是“待支付”
+
+        // 模拟状态流转
+        order.request();  // 订单支付后，进入“已支付”状态
+        order.request();  // 订单发货后，进入“已发货”状态
+        order.request();  // 订单完成后，进入“已完成”状态
+    }
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code class="language-plain">订单处于待支付状态，请支付。
+订单已支付，请发货。
+订单已发货，请等待接收。
+订单已完成。
+</code></pre>
+<p>在客户端测试代码中，我们首先创建了一个 <code>Order</code> 对象，该对象初始状态为“待支付”。然后通过调用 <code>request()</code> 方法，模拟订单状态的流转。每次调用 <code>request()</code> 方法时，都会根据当前的状态执行相应的操作，并转到下一个状态。</p>
+<h2 id="状态模式的优缺点"><a class="header" href="#状态模式的优缺点">状态模式的优缺点</a></h2>
+<h3 id="优点"><a class="header" href="#优点">优点</a></h3>
+<ul>
+<li><strong>简化复杂条件语句</strong>：状态模式通过将不同的状态转移和行为封装在独立的状态类中，避免了大量的 if-else 或 switch-case 语句，使得代码更加清晰和易于维护。</li>
+<li><strong>易于扩展</strong>：每增加一种状态时，我们只需要创建一个新的状态类，并实现相应的处理逻辑，不需要修改已有的代码，符合开闭原则，增加新的状态非常方便。</li>
+<li><strong>行为的局部化</strong>：不同的状态有不同的行为，每个状态只关心自己应该如何处理，不会影响其他状态的处理。这样避免了不同状态下行为的重复代码，增强了系统的内聚性。</li>
+</ul>
+<h3 id="缺点"><a class="header" href="#缺点">缺点</a></h3>
+<ul>
+<li><strong>类的数量增加</strong>：每个状态都需要一个对应的类，随着状态数目的增加，类的数量也会迅速增加，可能导致系统的复杂度增加，管理和维护成本上升。</li>
+<li><strong>状态之间的转换复杂</strong>：如果状态之间的转换规则比较复杂，可能会导致状态类之间的耦合度较高，增加系统的复杂性和难度。</li>
+<li><strong>容易过度设计</strong>：在一些较简单的场景下，使用状态模式可能会显得有些过度设计，反而增加了不必要的抽象和代码量。在简单的状态转换中，直接使用条件语句可能会更简洁有效。</li>
+</ul>
+<h2 id="扩展知识---源码分析"><a class="header" href="#扩展知识---源码分析">扩展知识 - 源码分析</a></h2>
+<h3 id="开源框架中的应用"><a class="header" href="#开源框架中的应用">开源框架中的应用</a></h3>
+<h4 id="1spring-框架"><a class="header" href="#1spring-框架">1、Spring 框架</a></h4>
+<p>Spring 里比较典型的状态模式应用是 <strong>Spring State Machine（SSM）</strong>。这个组件专门为状态驱动型的业务设计，比如订单从“待支付”到“已支付”，再到“已发货”、“已收货”，中间可能还有“退款”、“关闭”等状态，每种状态之间的切换都会触发不同的行为。</p>
+<p>在 Spring State Machine 中，主要的核心接口是 <code>StateMachine&lt;S, E&gt;</code>，<code>S</code> 表示状态类型，<code>E</code> 表示事件类型。整个框架围绕“状态 + 事件 + 转换”三大块展开。</p>
+<p>我们来看一下源码的核心类：</p>
+<pre><code class="language-java">/**
+ * 状态机接口，定义了状态机的基本操作。
+ * 
+ */
+public interface StateMachine&lt;S, E&gt; {
+
+    /**
+     * 获取当前状态机所处的状态。
+     */
+    State&lt;S, E&gt; getState();
+
+    /**
+     * 向状态机发送一个事件，用于触发状态转换。
+     * 
+     */
+    void sendEvent(E event);
+
+    /**
+     * 启动状态机，进入初始状态。
+     */
+    void start();
+
+    /**
+     * 停止状态机，通常用于清理资源或退出状态控制流程。
+     */
+    void stop();
+}
+
+</code></pre>
+<p>每个状态的行为通过实现 <code>State&lt;S, E&gt;</code> 接口来定义，比如进入状态、退出状态时要做什么事情：</p>
+<pre><code class="language-java">/**
+ * 表示状态机中的一个具体状态。
+ *
+ */
+public interface State&lt;S, E&gt; {
+
+    /**
+     * 获取当前状态的唯一标识。
+     */
+    S getId();
+
+    /**
+     * 进入该状态时执行的逻辑，通常用于初始化、打印日志或发出通知等操作。
+     */
+    void onEntry();
+
+    /**
+     * 退出该状态时执行的逻辑，通常用于清理资源或记录状态变化等操作。
+     */
+    void onExit();
+}
+
+</code></pre>
+<p>而状态之间的切换是由 <code>Transition&lt;S, E&gt;</code> 管理的：</p>
+<pre><code class="language-java">/**
+ * 表示状态机中的一次状态迁移（Transition），
+ * 包含源状态、目标状态和触发此次迁移的事件。
+ */
+public interface Transition&lt;S, E&gt; {
+
+    /**
+     * 获取迁移的起始状态（源状态）。
+     */
+    State&lt;S, E&gt; getSource();
+
+    /**
+     * 获取迁移的目标状态。
+     */
+    State&lt;S, E&gt; getTarget();
+
+    /**
+     * 获取触发此次状态迁移的事件。
+     */
+    E getTriggerEvent();
+}
+
+</code></pre>
+<p>我们可以通过一张类图来看下这个结构：</p>
+<p><img src="./img/15.png" alt=""></p>
+<p>可以看到，Spring State Machine 的设计非常符合状态模式的核心思想：将状态封装成对象，每个状态之间的转换由 Transition 管理，每种状态的行为独立开来，互不干扰。</p>
+<h3 id="优势和作用"><a class="header" href="#优势和作用">优势和作用</a></h3>
+<p>通过上述的源码分析，我们可以再次总结下状态模式的作用。</p>
+<h4 id="1提高代码可维护性"><a class="header" href="#1提高代码可维护性">1、提高代码可维护性</a></h4>
+<p>状态模式的最大优点就是把状态和行为解耦。就拿 Spring State Machine 来说，每个状态和对应的转换逻辑都封装成对象后，我们就不用再写一堆 if-else 或 switch-case 来判断当前处于哪个状态，也不用担心某个地方多写了状态判断而导致逻辑重复。</p>
+<h4 id="2方便扩展新状态或新行为"><a class="header" href="#2方便扩展新状态或新行为">2、方便扩展新状态或新行为</a></h4>
+<p>如果以后新增一个订单状态，比如“等待签收”，我们只需要新增一个状态对象，并注册相应的转换逻辑即可，不用改动现有的代码。这种开放封闭原则的体现，正是状态模式的强项。</p>
+<h4 id="3复杂流程管理更清晰"><a class="header" href="#3复杂流程管理更清晰">3、复杂流程管理更清晰</a></h4>
+<p>在像订单流转、审批流这种有明确流程的系统中，状态模式能很好地把状态流转管理清楚。尤其在多个状态共享某些公共行为或触发不同的事件时，状态模式能有效地把逻辑整理清楚，避免混乱。</p>
+<h2 id="相关面试题"><a class="header" href="#相关面试题">相关面试题</a></h2>
+<p>可以在 <a href="https://www.mianshiya.com/">程序员面试刷题神器 - 面试鸭</a> 上获取到企业常问的设计模式面试题。比如：</p>
+<p>1）<a href="https://www.mianshiya.com/bank/1801559627969929217/question/1802939360414605313">什么是状态模式？一般用在什么场景？</a></p>
+<p><img src="./img/16.png" alt=""></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../DesignPattern/19-迭代器模式.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../DesignPattern/21-责任链模式.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../DesignPattern/19-迭代器模式.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../DesignPattern/21-责任链模式.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
